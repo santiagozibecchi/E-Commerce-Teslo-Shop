@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Card, CardActionArea, CardMedia } from "@mui/material";
+import { Grid, Card, CardActionArea, CardMedia, Box, Typography } from '@mui/material';
 import { IProduct } from "../../interfaces";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 export const ProductCard: FC<Props> = ({ product }) => {
    return (
-      <Grid item xs={6} sm={4} key={product.slug}>
+      <Grid item xs={6} sm={4}>
          <Card>
             <CardActionArea>
                <CardMedia
@@ -18,6 +18,10 @@ export const ProductCard: FC<Props> = ({ product }) => {
                />
             </CardActionArea>
          </Card>
+         <Box sx={{ mt: 1 }} className="fadeIn">
+            <Typography fontWeight={700}>{product.title}</Typography>
+            <Typography fontWeight={500}>${product.price}</Typography>
+         </Box>
       </Grid>
    );
 };
