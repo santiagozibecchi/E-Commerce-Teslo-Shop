@@ -1,4 +1,5 @@
 import { FC, useMemo, useState } from "react";
+import NextLink from "next/link";
 import {
    Grid,
    Card,
@@ -6,9 +7,10 @@ import {
    CardMedia,
    Box,
    Typography,
+   Link,
 } from "@mui/material";
 import { IProduct } from "../../interfaces";
-import 'animate.css';
+import "animate.css";
 
 interface Props {
    product: IProduct;
@@ -16,7 +18,7 @@ interface Props {
 
 export const ProductCard: FC<Props> = ({ product }) => {
    const [isHovered, setIsHovered] = useState(false);
-   const checked = isHovered;
+
    // Memorizamos el productImage porque puede cambiar otro estado y no quiero que se vuelva a recalcular cada vez.
    const productImage = useMemo(() => {
       return isHovered
@@ -33,15 +35,19 @@ export const ProductCard: FC<Props> = ({ product }) => {
          onMouseLeave={() => setIsHovered(false)}
       >
          <Card>
-            <CardActionArea>
-                  <CardMedia
-                     className="animate__animated animate__fadeIn"
-                     component="img"
-                     image={productImage}
-                     alt={product.title}
-                     // className="fadeIn"
-                  />
-            </CardActionArea>
+            <NextLink href="/product/slug" passHref prefetch={false}>
+               <Link>
+                  <CardActionArea>
+                     <CardMedia
+                        className="animate__animated animate__fadeIn"
+                        component="img"
+                        image={productImage}
+                        alt={product.title}
+                        // className="fadeIn"
+                     />
+                  </CardActionArea>
+               </Link>
+            </NextLink>
          </Card>
          <Box sx={{ mt: 1 }} className="fadeIn">
             <Typography fontWeight={700}>{product.title}</Typography>
