@@ -7,7 +7,7 @@ import {
    Grid,
    Typography,
 } from "@mui/material";
-import { CartList } from "../../components/cart";
+import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
 
 const CardPage = () => {
@@ -30,6 +30,7 @@ const CardPage = () => {
                      <Typography variant="h2">Orden</Typography>
                      <Divider sx={{ my: 1 }} />
                      {/* Resumen de la order - OrdenSummary */}
+                     <OrderSummary />
                      <Box sx={{ mt: 3 }}>
                         <Button
                            color="secondary"
