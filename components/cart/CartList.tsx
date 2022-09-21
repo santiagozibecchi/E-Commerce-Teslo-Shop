@@ -19,12 +19,17 @@ const productsInCart = [
    initialData.products[5],
 ];
 
-export const CartList: FC = () => {
+// Para evitar que el cliente pueda editar la orden
+interface Props {
+   editable: boolean;
+}
+
+export const CartList: FC<Props> = ({ editable }) => {
    return (
       <>
          {productsInCart.map((product) => (
-            <Grid container spacing={2} sx={{ mb: 1 }} key={product.slug}>
-               <Grid item xs={3}>
+            <Grid container spacing={1} sx={{ mb: 1 }} key={product.slug}>
+               <Grid item xs={3.2}>
                   {/* TODO: Llevar a la pagina del producto */}
                   <NextLink href="/product/slug" passHref>
                      <Link>
@@ -38,7 +43,7 @@ export const CartList: FC = () => {
                      </Link>
                   </NextLink>
                </Grid>
-               <Grid item xs={6}>
+               <Grid item xs={5.8}>
                   <Box display="flex" flexDirection="column">
                      <Typography variant="body2">{product.title}</Typography>
                      <Typography variant="body2">
@@ -46,7 +51,11 @@ export const CartList: FC = () => {
                      </Typography>
 
                      {/* Condicional ya que en un determinado punto no podra volver a modificar la cantidad*/}
-                     <ItemCounter />
+                     {editable ? (
+                        <ItemCounter />
+                     ) : (
+                        <Typography variant="body2">Cantidad: 3</Typography>
+                     )}
                   </Box>
                </Grid>
                <Grid
