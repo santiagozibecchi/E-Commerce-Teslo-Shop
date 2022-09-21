@@ -7,6 +7,7 @@ import {
    Grid,
    Typography,
 } from "@mui/material";
+import { CartList } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
 
 const CardPage = () => {
@@ -15,12 +16,13 @@ const CardPage = () => {
          title={`Carrito - 3`}
          pageDescription={"Carrito de compra de la tienda"}
       >
-         <Typography variant="h1" component="h1"></Typography>
+         <Typography variant="h1" component="h1">Carrito</Typography>
 
          <Grid container>
             {/* Para mostrar los productos que tenemos en el carrito */}
             <Grid item xs={12} sm={7}>
                {/* CartList */}
+               <CartList />
             </Grid>
             <Grid item xs={12} sm={5}>
                <Card className="summary-card">
