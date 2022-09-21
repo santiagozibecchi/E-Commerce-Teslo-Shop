@@ -10,7 +10,6 @@ import {
    Link,
 } from "@mui/material";
 import { IProduct } from "../../interfaces";
-import "animate.css";
 
 interface Props {
    product: IProduct;
@@ -19,7 +18,7 @@ interface Props {
 export const ProductCard: FC<Props> = ({ product }) => {
    const [isHovered, setIsHovered] = useState(false);
 
-   // Memorizamos el productImage porque puede cambiar otro estado y no quiero que se vuelva a recalcular cada vez.
+   // Memorizamos el productImage porque puede cambiar otro estado y no quiero que se vuelva a recalcular cada vez que otro componente cambie su estado.
    const productImage = useMemo(() => {
       return isHovered
          ? `products/${product.images[1]}`
