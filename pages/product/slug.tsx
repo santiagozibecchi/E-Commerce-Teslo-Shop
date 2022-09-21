@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Box, Typography, Button, Chip } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
-import { ProductSlidesShow } from "../../components/products";
+import { ProductSlidesShow, SizeSelector } from "../../components/products";
 import { initialData } from "../../database/products";
 import { ItemCounter } from "../../components/ui";
 
@@ -16,20 +16,28 @@ const ProductPage = () => {
             </Grid>
             <Grid item xs={12} sm={5}>
                <Box display="flex" flexDirection="column">
-                  {/* Titulos */}
+                  {/* // * Titulos */}
+
                   <Typography variant="h1" component="h1">
                      {product.title}
                   </Typography>
                   <Typography variant="subtitle1" component="h2">
                      ${product.price}
                   </Typography>
-                  {/* Cantidad */}
+                  {/* // * Cantidad */}
+
                   <Box sx={{ my: 2 }}>
                      <Typography variant="subtitle2">Cantidad</Typography>
                      <ItemCounter />
+                     {/* Tallas */}
+                     <SizeSelector
+                        // seletedSize={/* product.sizes[0] */ }
+                        sizes={[...product.sizes]}
+                     />
                   </Box>
 
-                  {/* Agregar al carrito */}
+                  {/* // * Agregar al carrito */}
+
                   <Button color="secondary" className="circular-btn">
                      Agregar al carrito
                   </Button>
