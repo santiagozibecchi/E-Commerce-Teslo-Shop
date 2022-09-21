@@ -22,7 +22,7 @@ const CardPage = () => {
             {/* Para mostrar los productos que tenemos en el carrito */}
             <Grid item xs={12} sm={7}>
                {/* CartList */}
-               <CartList />
+               <CartList editable/>
             </Grid>
             <Grid item xs={12} sm={5}>
                <Card className="summary-card">
