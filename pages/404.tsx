@@ -25,7 +25,7 @@ const Custom404Page = () => {
             >
                404 |
             </Typography>
-            <Typography ml={2}>Esta pagína no existe</Typography>
+            <Typography ml={2}>Esta página no existe</Typography>
          </Box>
       </ShopLayout>
    );
