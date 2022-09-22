@@ -21,7 +21,7 @@ const productsInCart = [
 
 // Para evitar que el cliente pueda editar la orden
 interface Props {
-   editable: boolean;
+   editable?: boolean;
 }
 
 export const CartList: FC<Props> = ({ editable }) => {
@@ -35,7 +35,7 @@ export const CartList: FC<Props> = ({ editable }) => {
                      <Link>
                         <CardActionArea>
                            <CardMedia
-                              image={`products/${product.images[0]}`}
+                              image={`/products/${product.images[0]}`}
                               component="img"
                               sx={{ borderRadius: "5px" }}
                            />

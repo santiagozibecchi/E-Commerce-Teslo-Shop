@@ -16,13 +16,15 @@ const CardPage = () => {
          title={`Carrito - 3`}
          pageDescription={"Carrito de compra de la tienda"}
       >
-         <Typography variant="h1" component="h1">Carrito</Typography>
+         <Typography variant="h1" component="h1">
+            Carrito
+         </Typography>
 
-         <Grid container>
+         <Grid container mt={3}>
             {/* Para mostrar los productos que tenemos en el carrito */}
             <Grid item xs={12} sm={7}>
                {/* CartList */}
-               <CartList editable/>
+               <CartList editable />
             </Grid>
             <Grid item xs={12} sm={5}>
                <Card className="summary-card">
