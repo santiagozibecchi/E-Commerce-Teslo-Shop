@@ -1,0 +1,6 @@
+.loginForm {
+   border: 1px solid rgba(124, 120, 120, 0.522);
+   border-radius: 16px;
+   background-color: #dfe3e613;
+   backdrop-filter: blur(20px);
+}
