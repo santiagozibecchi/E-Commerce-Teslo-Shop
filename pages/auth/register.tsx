@@ -42,7 +42,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
    },
 }));
 
-const LoginPage = () => {
+const RegisterPage = () => {
    return (
       <AuthLayout title={"Ingresar"}>
          <Box className={styles.loginForm}>
@@ -60,12 +60,19 @@ const LoginPage = () => {
                         color="secondary"
                         fontWeight="bold"
                      >
-                        Iniciar Sesión
+                        Crear una cuenta
                      </Typography>
                   </Grid>
                   <Grid item xs={12}>
                      <StyledTextField
                         label="Correo"
+                        variant="outlined"
+                        fullWidth
+                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                     <StyledTextField
+                        label="Nombre"
                         variant="outlined"
                         fullWidth
                      />
@@ -88,8 +95,8 @@ const LoginPage = () => {
                      </Button>
                   </Grid>
                   <Grid item xs={12} display="flex" justifyContent="flex-end">
-                     <NextLink href="/auth/register" passHref>
-                        <Link underline="always">¿No tienes cuenta?</Link>
+                     <NextLink href="/auth/login" passHref>
+                        <Link underline="always">¿Ya tienes una cuenta?</Link>
                      </NextLink>
                   </Grid>
                </Grid>
@@ -99,4 +106,4 @@ const LoginPage = () => {
    );
 };
 
-export default LoginPage;
+export default RegisterPage;
