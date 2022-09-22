@@ -60,7 +60,7 @@ const RegisterPage = () => {
                         color="secondary"
                         fontWeight="bold"
                      >
-                        Crear una cuenta
+                        Crea tu cuenta
                      </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -101,6 +101,22 @@ const RegisterPage = () => {
                   </Grid>
                </Grid>
             </Box>
+         </Box>
+         <Box
+            className={styles.loginForm}
+            sx={{
+               position: "absolute",
+               top: 10,
+               left: 10,
+               padding: "5px",
+               px: "10px",
+            }}
+         >
+            <NextLink href="/" passHref>
+               <Link fontSize="12px" color="white">
+                  Página Principal
+               </Link>
+            </NextLink>
          </Box>
       </AuthLayout>
    );
