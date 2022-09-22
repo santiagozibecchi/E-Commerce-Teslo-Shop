@@ -20,9 +20,17 @@ export const AuthLayout: FC<PropsWithChildren<Props>> = ({
          <main className={styles.authLayout}>
             <Box
                display="flex"
+               sx={{
+                  flexDirection: { xs: "column-reverse", sm: "row" },
+                  height: {
+                     xs: "100vh",
+                     sm: "calc(100vh - 100px)",
+                  },
+               }}
                justifyContent="center"
                alignItems="center"
-               height="calc(100vh - 100px)"
+               // height="calc(100vh - 100px)"
+               gap={1}
             >
                {children}
             </Box>

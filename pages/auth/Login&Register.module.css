@@ -6,3 +6,24 @@
    -webkit-box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.6);
    -moz-box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.6);
 }
+
+.imageRight {
+   position: relative;
+   background: linear-gradient(
+         rgba(255, 255, 255, 0.229),
+         rgba(255, 255, 255, 0.055)
+      ),
+      url("https://digitalassets-shop.tesla.com/image/upload/f_auto,q_auto/v1/content/dam/tesla/LIFESTYLE/OUTERWEAR/JACKETS/1740250-00-A_1_2000.jpg");
+   width: 350px;
+   height: 318px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-size: cover;
+   border-radius: 16px;
+   background-color: #dfe3e613;
+   backdrop-filter: blur(20px);
+   box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.6);
+   -webkit-box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.6);
+   -moz-box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.6);
+}

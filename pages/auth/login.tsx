@@ -95,6 +95,30 @@ const LoginPage = () => {
                </Grid>
             </Box>
          </Box>
+         <Box
+            className={styles.imageRight}
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+         >
+            <Typography
+               mb={2}
+               fontSize="40px"
+               fontWeight="bold"
+               color="secondary"
+            >
+               Ropas para
+            </Typography>
+            <Typography fontWeight="bold" variant="subtitle1" color="secondary">
+               Hombre
+            </Typography>
+            <Typography fontWeight="bold" variant="subtitle1" color="secondary">
+               Mujeres
+            </Typography>
+            <Typography fontWeight="bold" variant="subtitle1" color="secondary">
+               Niños
+            </Typography>
+         </Box>
       </AuthLayout>
    );
 };
