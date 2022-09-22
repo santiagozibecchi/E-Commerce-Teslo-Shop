@@ -10,6 +10,9 @@ import {
    Typography,
    styled,
 } from "@mui/material";
+import ManOutlinedIcon from "@mui/icons-material/ManOutlined";
+import Woman2OutlinedIcon from "@mui/icons-material/Woman2Outlined";
+import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
 import styles from "./Login&Register.module.css";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -99,7 +102,7 @@ const LoginPage = () => {
             className={styles.imageRight}
             display="flex"
             flexDirection="column"
-            alignItems="flex-start"
+            gap={2}
          >
             <Typography
                mb={2}
@@ -107,17 +110,38 @@ const LoginPage = () => {
                fontWeight="bold"
                color="secondary"
             >
-               Ropas para
+               ROPAS
             </Typography>
-            <Typography fontWeight="bold" variant="subtitle1" color="secondary">
-               Hombre
-            </Typography>
-            <Typography fontWeight="bold" variant="subtitle1" color="secondary">
-               Mujeres
-            </Typography>
-            <Typography fontWeight="bold" variant="subtitle1" color="secondary">
-               Niños
-            </Typography>
+            <NextLink href="/" passHref>
+               <Link
+                  underline="always"
+                  fontWeight="bold"
+                  variant="subtitle1"
+                  color="secondary"
+               >
+                  Hombres
+               </Link>
+            </NextLink>
+            <NextLink href="/" passHref>
+               <Link
+                  underline="always"
+                  fontWeight="bold"
+                  variant="subtitle1"
+                  color="secondary"
+               >
+                  Mujeres
+               </Link>
+            </NextLink>
+            <NextLink href="/" passHref>
+               <Link
+                  underline="always"
+                  fontWeight="bold"
+                  variant="subtitle1"
+                  color="secondary"
+               >
+                  Niños
+               </Link>
+            </NextLink>
          </Box>
       </AuthLayout>
    );
