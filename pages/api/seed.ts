@@ -6,6 +6,8 @@ type Data = {
    message: string;
 };
 
+// * ENDPOINT SEMILLA: CARGAR DATOS EN DB
+
 export default async function handler(
    req: NextApiRequest,
    res: NextApiResponse<Data>
