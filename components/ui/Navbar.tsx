@@ -1,4 +1,8 @@
+import { useContext } from "react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { UiContext } from "../../context";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
    AppBar,
    Link,
@@ -10,12 +14,12 @@ import {
    Badge,
 } from "@mui/material";
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { useRouter } from "next/router";
 
 export const Navbar = () => {
    const router = useRouter();
    const activeLink = router.asPath;
+
+   const { toggleSideMenu } = useContext(UiContext);
 
    return (
       <AppBar>
@@ -33,7 +37,11 @@ export const Navbar = () => {
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
                <NextLink href="/category/men" passHref>
                   <Link>
-                     <Button color={activeLink === "/category/men" ? "primary" : "info"}>
+                     <Button
+                        color={
+                           activeLink === "/category/men" ? "primary" : "info"
+                        }
+                     >
                         Hombres
                      </Button>
                   </Link>
@@ -41,13 +49,25 @@ export const Navbar = () => {
 
                <NextLink href="/category/women" passHref>
                   <Link>
-                     <Button color={activeLink === "/category/women" ? "primary" : "info"}>Mujeres</Button>
+                     <Button
+                        color={
+                           activeLink === "/category/women" ? "primary" : "info"
+                        }
+                     >
+                        Mujeres
+                     </Button>
                   </Link>
                </NextLink>
 
                <NextLink href="/category/kid" passHref>
                   <Link>
-                     <Button color={activeLink === "/category/kid" ? "primary" : "info"}>Niños</Button>
+                     <Button
+                        color={
+                           activeLink === "/category/kid" ? "primary" : "info"
+                        }
+                     >
+                        Niños
+                     </Button>
                   </Link>
                </NextLink>
             </Box>
@@ -68,7 +88,7 @@ export const Navbar = () => {
                </Link>
             </NextLink>
 
-            <Button>Menu</Button>
+            <Button onClick={toggleSideMenu}>Menu</Button>
          </Toolbar>
       </AppBar>
    );
