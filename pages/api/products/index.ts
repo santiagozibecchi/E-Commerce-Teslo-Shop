@@ -23,6 +23,7 @@ export default function handler(
          });
    }
 }
+
 const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
    // siempre voy a tener un genero
    const { gender = "all" } = req.query;
