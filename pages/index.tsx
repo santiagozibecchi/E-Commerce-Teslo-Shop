@@ -2,10 +2,20 @@ import type { NextPage } from "next";
 import { Typography } from "@mui/material";
 import { ShopLayout } from "../components/layouts";
 import { ProductList } from "../components/products";
-import { initialData } from "../database/products";
+import useSWR from "swr";
 import "animate.css";
 
-const Home: NextPage = () => {
+const fetcher = (...args: [key: string]) =>
+   fetch(...args).then((res) => res.json());
+
+const HomePage: NextPage = () => {
+   const { data, error } = useSWR("/api/products", fetcher);
+
+   console.log({ data });
+
+   if (error) return <div>failed to load</div>;
+   if (!data) return <div>loading...</div>;
+
    return (
       <ShopLayout
          title={"Teslo-Shop - Home"}
@@ -19,9 +29,9 @@ const Home: NextPage = () => {
          </Typography>
 
          {/* any temporal ya que todavia no levantamos la base de datos */}
-         <ProductList products={initialData.products as any} />
+         <ProductList products={data} />
       </ShopLayout>
    );
 };
 
-export default Home;
+export default HomePage;
