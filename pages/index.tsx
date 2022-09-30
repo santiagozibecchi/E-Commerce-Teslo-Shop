@@ -2,11 +2,12 @@ import type { NextPage } from "next";
 import { Typography } from "@mui/material";
 import { ShopLayout } from "../components/layouts";
 import { ProductList } from "../components/products";
-import "animate.css";
 import { useProducts } from "../hooks";
+import { FullScreenLoading } from "../components/ui";
+import "animate.css";
 
 const HomePage: NextPage = () => {
-   const { products, isError, isloading } = useProducts("/products");
+   const { products, isloading } = useProducts("/products");
 
    return (
       <ShopLayout
@@ -20,7 +21,11 @@ const HomePage: NextPage = () => {
             Todos los productos
          </Typography>
 
-         {isloading ? <h1>Cargando</h1> : <ProductList products={products} />}
+         {isloading ? (
+            <FullScreenLoading />
+         ) : (
+            <ProductList products={products} />
+         )}
       </ShopLayout>
    );
 };
