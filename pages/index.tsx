@@ -9,10 +9,12 @@ import "animate.css";
 const HomePage: NextPage = () => {
    const { products, isloading } = useProducts("/products");
 
+   console.log(products);
+
    return (
       <ShopLayout
-         title={"Teslo-Shop - Home"}
-         pageDescription={"Encuentra los mejores productos de Teslo"}
+         title="Teslo-Shop - Home"
+         pageDescription="Encuentra los mejores productos de Teslo"
       >
          <Typography variant="h1" component="h1">
             Tienda
