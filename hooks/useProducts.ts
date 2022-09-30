@@ -1,5 +1,5 @@
 import useSWR, { SWRConfiguration } from "swr";
-import { IProduct } from "../interfaces";
+import { IProduct } from '../interfaces/products';
 
 // const fetcher = (...args: [key: string]) =>
 //    fetch(...args).then((res) => res.json());
@@ -18,3 +18,6 @@ export const useProducts = (url: string, config: SWRConfiguration = {}) => {
       isError: error,
    };
 };
+
+// * useProduct tiene que ser un hook generico
+// useProduct<--ESPECIFICO EL TIPO DE DATA QUE regresa-->("....URL....")

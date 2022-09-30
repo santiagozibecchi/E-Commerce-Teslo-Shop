@@ -1,13 +1,16 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { Grid, Box, Typography, Button, Chip } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
 import { ProductSlidesShow, SizeSelector } from "../../components/products";
-import { initialData } from "../../database/products";
 import { ItemCounter } from "../../components/ui";
 
-const product = initialData.products[0];
 
 const ProductPage = () => {
+
+
+   
+
    return (
       <ShopLayout title={product.title} pageDescription={product.description}>
          <Grid container spacing={3}>
@@ -63,3 +66,18 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
+// En caso de utilizar el hook
+
+// en un pricipio regresa undefined
+// const router = useRouter();
+// const { products: product, isLoading } = useProducts<IProduct>(
+//    `/products/${router.query.slug}`
+// );
+// -------
+// if (isLoading) {
+//    return <h1>Cargando</h1>;
+// }
+// if (!product) {
+//    return <h1>No existe</h1>;
+// }
