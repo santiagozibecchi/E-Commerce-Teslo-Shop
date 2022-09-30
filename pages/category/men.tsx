@@ -9,7 +9,6 @@ import "animate.css";
 const MenPage: NextPage = () => {
    const { products, isloading } = useProducts("/products?gender=men");
 
-   console.log(products);
 
    return (
       <ShopLayout
