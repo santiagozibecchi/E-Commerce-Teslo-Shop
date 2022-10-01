@@ -28,7 +28,7 @@ const searchProducts = async (
    req: NextApiRequest,
    res: NextApiResponse<Data>
 ) => {
-   // utilizo let porque voy a modificar el qury una vez que lo obtenga
+   // utilizo let porque voy a modificar el query una vez que lo obtenga
    let { q = "" } = req.query;
 
    q = q.toString().toLowerCase();
