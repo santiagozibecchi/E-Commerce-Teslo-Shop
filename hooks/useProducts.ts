@@ -1,11 +1,7 @@
 import useSWR, { SWRConfiguration } from "swr";
-import { IProduct } from '../interfaces/products';
-
-// const fetcher = (...args: [key: string]) =>
-//    fetch(...args).then((res) => res.json());
+import { IProduct } from "../interfaces/products";
 
 export const useProducts = (url: string, config: SWRConfiguration = {}) => {
-//    const { data, error } = useSWR<IProduct[]>(`/api${url}`, fetcher);
    const { data, error } = useSWR<IProduct[]>(`/api${url}`, config);
 
    return {
@@ -19,5 +15,10 @@ export const useProducts = (url: string, config: SWRConfiguration = {}) => {
    };
 };
 
-// * useProduct tiene que ser un hook generico
+// * useProduct podria ser un hook generico pero no en este caso
 // useProduct<--ESPECIFICO EL TIPO DE DATA QUE regresa-->("....URL....")
+
+// No necesito aca porque esta global
+// const fetcher = (...args: [key: string]) =>
+// fetch(...args).then((res) => res.json());
+// const { data, error } = useSWR<IProduct[]>(`/api${url}`, fetcher);
