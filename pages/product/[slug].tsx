@@ -4,6 +4,7 @@ import { ShopLayout } from "../../components/layouts";
 import { ProductSlidesShow, SizeSelector } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
 import { IProduct } from "../../interfaces";
+import { dbProducts } from "../../database";
 
 interface Props {
    product: IProduct;
@@ -64,18 +65,36 @@ const ProductPage: NextPage<Props> = ({ product }) => {
    );
 };
 
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
-import { GetServerSideProps } from "next";
-import { dbProducts } from "../../database";
+// You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
+import { GetStaticPaths } from "next";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-   const { params } = ctx;
+export const getStaticPaths: GetStaticPaths = async () => {
+   const slugs = await dbProducts.getAllProductsSlugs();
+
+   // paths en un arreglo de objetos que recibe los params
+   return {
+      paths: slugs.map(({ slug }) => ({
+         params: {
+            slug,
+         },
+      })),
+      fallback: "blocking",
+   };
+};
+
+// You should use getStaticProps when:
+//- The data required to render the page is available at build time ahead of a user’s request.
+//- The data comes from a headless CMS.
+//- The data can be publicly cached (not user-specific).
+//- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
+import { GetStaticProps } from "next";
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+   // params = argumento del url
    const { slug = "" } = params as { slug: string };
-
    const product = await dbProducts.getProductBySlug(slug);
 
-   // Si el producto no existe
+   // Puede ser que tengamos o no un producto EN LA BASE DE DATOS
    if (!product) {
       return {
          redirect: {
@@ -84,13 +103,43 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
          },
       };
    }
+   // ESTO ES CUANDO EL PRODUCTO ESTA YA EN LA BASE DE DATOS
+   // Puede ser que agrege un producto despues de construir el sitio, y cuando este sea el caso, quiero que tmb next construya esa pagina y la almacene el fileSystem. SE VERA EN FUNCIONAMIENTO CON EL MANTENIMIENTO DE LOS PRODUCTOS
 
    return {
       props: { product },
+      revalidate: 86400,
    };
 };
 
 export default ProductPage;
+
+// ! En caso de usar SSP
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+// import { GetServerSideProps } from "next";
+
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//    const { params } = ctx;
+//    const { slug = "" } = params as { slug: string };
+
+//    const product = await dbProducts.getProductBySlug(slug);
+
+//    // Si el producto no existe
+//    if (!product) {
+//       return {
+//          redirect: {
+//             destination: "/",
+//             permanent: false,
+//          },
+//       };
+//    }
+
+//    return {
+//       props: { product },
+//    };
+// };
 
 // ! En caso de utilizar el hook
 

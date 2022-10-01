@@ -27,3 +27,29 @@ export const getProductBySlug = async (
    // Forza al objeto a ser serializado como un string
    return JSON.parse(JSON.stringify(product));
 };
+
+// Funcion para obtener todos los productos
+
+interface ProductSlug {
+   slug: string;
+}
+
+export const getAllProductsSlugs = async (): Promise<ProductSlug[]> => {
+   await db.connect();
+
+   const slugs = await Product.find().select("slug -_id").lean();
+
+   await db.disconnect();
+
+   return slugs;
+   /*
+      slugs => 
+      [
+         {slug: "string"},
+         {slug: "string"},
+         {slug: "string"},
+         {slug: "string"},
+         {slug: "string"},
+      ]
+   */
+};
