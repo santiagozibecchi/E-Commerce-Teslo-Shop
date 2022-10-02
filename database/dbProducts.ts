@@ -69,3 +69,16 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
 
    return products;
 };
+
+// Funcion para obtener todos los productos
+export const getAllProducts = async (): Promise<IProduct[]> => {
+   await db.connect();
+
+   const products = await Product.find().lean();
+
+   await db.disconnect();
+
+   return JSON.parse(JSON.stringify(products));
+};
+
+// * Tanto las fechas de mongodb como el _id: newObjectId("aa23raefsas54a5s"), no estan serializadas

@@ -1,26 +1,39 @@
 import type { NextPage } from "next";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
 import { ProductList } from "../../components/products";
 import "animate.css";
 
 interface Props {
    products: IProduct[];
+   foundProducts: boolean;
+   query: string;
 }
 
-const SearchPage: NextPage<Props> = ({ products }) => {
-
+const SearchPage: NextPage<Props> = ({ products, foundProducts, query }) => {
    return (
       <ShopLayout
          title="Teslo-Shop - Search"
          pageDescription="Encuentra los mejores productos de Teslo"
       >
-         <Typography variant="h1" component="h1">
+         <Typography variant="h1" component="h1" mb={1}>
             Buscar Producto
          </Typography>
-         <Typography variant="h2" sx={{ mb: 1 }}>
-            ABC -- 123
-         </Typography>
+
+         {foundProducts ? (
+            <Typography variant="h2" sx={{ mb: 1 }}>
+               Término: {query}
+            </Typography>
+         ) : (
+            <Box display="flex">
+               <Typography variant="h2" sx={{ mb: 3 }}>
+                  No encontramos ningún producto
+               </Typography>
+               <Typography color="secondary" variant="h2" sx={{ mb: 1, ml: 1 }}>
+                  {query}
+               </Typography>
+            </Box>
+         )}
 
          <ProductList products={products} />
       </ShopLayout>
@@ -55,11 +68,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
    // * Utilizamos "let" porque tambien podria ser que no obtengamos ningun producto
    let products = await dbProducts.getProductsByTerm(query);
+   const foundProducts = products.length > 0;
 
-   // TODO: Retornar otros productos..
+   // TODO: Retornar otros productos si el arreglo no regresa ningun producto
+   if (!foundProducts) {
+      // products = await dbProducts.getAllProducts();
+      // * En lugar de regresar todos los productos podremos regresar uno en particular
+
+      products = await dbProducts.getProductsByTerm("cybertruck");
+   }
 
    return {
-      props: { products },
+      props: { products, foundProducts, query },
    };
 };
 
