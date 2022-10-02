@@ -25,6 +25,7 @@ export const getProductBySlug = async (
    }
 
    // Forza al objeto a ser serializado como un string
+   // tecnica del parseo se utiliza mas que nada cuando tengo el objectId de mongo. fechas
    return JSON.parse(JSON.stringify(product));
 };
 
@@ -52,4 +53,19 @@ export const getAllProductsSlugs = async (): Promise<ProductSlug[]> => {
          {slug: "string"},
       ]
    */
+};
+
+// Funcion para buscar un producto por el termino de busqueda
+export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
+   term = term.toString().toLowerCase();
+
+   await db.connect();
+   const products = await Product.find({
+      $text: { $search: term },
+   })
+      .select("title images price inStock slug -_id")
+      .lean();
+   await db.disconnect();
+
+   return products;
 };

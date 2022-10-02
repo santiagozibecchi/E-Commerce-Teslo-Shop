@@ -8,8 +8,7 @@ import "animate.css";
 
 const HomePage: NextPage = () => {
    const { products, isloading } = useProducts("/products");
-
-   console.log(products);
+   // Al usar nuestro hook que por dentro funciona con useSWR(), ademas de obtener la respuesta de la API, tambien estamos guardando el cache del navegador, de esta forma aumenta el rendimiento de la pagina al no tener que volver a realizar muchas peticiones, ademas devuelve un status 304.
 
    return (
       <ShopLayout
