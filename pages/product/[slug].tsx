@@ -3,7 +3,7 @@ import { Grid, Box, Typography, Button, Chip } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
 import { ProductSlidesShow, SizeSelector } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
-import { IProduct } from "../../interfaces";
+import { ICartProduct, IProduct, ISize } from "../../interfaces";
 import { dbProducts } from "../../database";
 
 interface Props {
@@ -11,6 +11,25 @@ interface Props {
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+   // Creo un estado temporal
+   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+      _id: product._id,
+      images: product.images[0],
+      price: product.price,
+      size: undefined,
+      slug: product.slug,
+      title: product.title,
+      gender: product.gender,
+      quantity: 1,
+   });
+
+   const selectedSize = (size: ISize) => {
+      setTempCartProduct((currentProduct) => ({
+         ...currentProduct,
+         size,
+      }));
+   };
+
    return (
       <ShopLayout title={product.title} pageDescription={product.description}>
          <Grid container spacing={3}>
@@ -34,8 +53,12 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                      <ItemCounter />
                      {/* Tallas */}
                      <SizeSelector
-                        // seletedSize={/* product.sizes[0] */ }
-                        sizes={[...product.sizes]}
+                        selectedSize={tempCartProduct.size}
+                        sizes={product.sizes}
+                        // Funcion que se ejecuta dentro del componente
+                        // Cada vez que se genera el onClick dentro de este, se ejecuta esta funcion y llama a la funcion selectedSize para actualizar el estado temporal
+                        // onSelectedSize recibe el size dentro del componente y se lo pasa a selectedSize
+                        onSelectedSize={selectedSize}
                      />
                   </Box>
 
@@ -43,7 +66,9 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 
                   {product.inStock > 0 ? (
                      <Button color="secondary" className="circular-btn">
-                        Agregar al carrito
+                        {tempCartProduct.size
+                           ? "Agregar al carrito"
+                           : "Seleccione una talla"}
                      </Button>
                   ) : (
                      <Chip
@@ -90,6 +115,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 //- The data can be publicly cached (not user-specific).
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 import { GetStaticProps } from "next";
+import { useState } from "react";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
    // params = argumento del url

@@ -6,7 +6,7 @@ export interface ICartProduct {
    images: string;
    price: number;
    // Solo es necesario un precio (no va a cambiar el precio por talla)
-   sizes: ISize;
+   size?: ISize;
    // Para poder regresar al articulo
    slug: string;
    title: string;
