@@ -28,7 +28,7 @@ export const Navbar = () => {
 
    const onSearchTerm = () => {
       if (searchTerm.trim().length === 0) return;
-      push(url);
+      push(`/search/${searchTerm}`);
    };
 
    return (
