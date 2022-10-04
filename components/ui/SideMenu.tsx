@@ -55,6 +55,7 @@ export const SideMenu = () => {
             <List>
                <ListItem>
                   <Input
+                     autoFocus
                      value={searchTerm}
                      onKeyPress={(e) =>
                         e.key === "Enter" ? onSearchTerm() : null
