@@ -1,9 +1,15 @@
-import { NextPage } from "next";
+import { useContext, useState } from "react";
+import { NextPage, GetStaticProps, GetStaticPaths } from "next";
+import { useRouter } from "next/router";
+
+import { CartContext } from "../../context";
+
 import { Grid, Box, Typography, Button, Chip } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
 import { ProductSlidesShow, SizeSelector } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
 import { ICartProduct, IProduct, ISize } from "../../interfaces";
+
 import { dbProducts } from "../../database";
 
 interface Props {
@@ -11,6 +17,9 @@ interface Props {
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+   const { addProductToCart } = useContext(CartContext);
+   const router = useRouter();
+
    // Creo un estado temporal
    const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
       _id: product._id,
@@ -40,8 +49,13 @@ const ProductPage: NextPage<Props> = ({ product }) => {
    };
 
    const onAddProduct = () => {
-      console.log(tempCartProduct);
-      // talla, producto que lleva y cantidad basado en el contador
+      if (!tempCartProduct.size) return;
+
+      // TODO: Llamar la accion del context para agregar al carrito
+
+      addProductToCart(tempCartProduct);
+      console.log({ tempCartProduct });
+      // router.push("/cart");
    };
 
    return (
@@ -60,8 +74,8 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                   <Typography variant="subtitle1" component="h2">
                      ${product.price}
                   </Typography>
-                  {/* // * Cantidad */}
 
+                  {/* // * Cantidad */}
                   <Box sx={{ my: 2 }}>
                      <Typography variant="subtitle2">Cantidad</Typography>
                      <ItemCounter
@@ -116,7 +130,6 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 };
 
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
-import { GetStaticPaths } from "next";
 
 export const getStaticPaths: GetStaticPaths = async () => {
    const slugs = await dbProducts.getAllProductsSlugs();
@@ -137,8 +150,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 //- The data comes from a headless CMS.
 //- The data can be publicly cached (not user-specific).
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
-import { GetStaticProps } from "next";
-import { useState } from "react";
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
    // params = argumento del url
