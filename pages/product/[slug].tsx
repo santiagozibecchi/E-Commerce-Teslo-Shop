@@ -23,11 +23,25 @@ const ProductPage: NextPage<Props> = ({ product }) => {
       quantity: 1,
    });
 
+   // Actualiza la talla
    const selectedSize = (size: ISize) => {
       setTempCartProduct((currentProduct) => ({
          ...currentProduct,
          size,
       }));
+   };
+
+   // Actualiza la cantidad
+   const onUpdateQuantity = (quantity: number) => {
+      setTempCartProduct((currentProduct) => ({
+         ...currentProduct,
+         quantity,
+      }));
+   };
+
+   const onAddProduct = () => {
+      console.log(tempCartProduct);
+      // talla, producto que lleva y cantidad basado en el contador
    };
 
    return (
@@ -50,9 +64,14 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 
                   <Box sx={{ my: 2 }}>
                      <Typography variant="subtitle2">Cantidad</Typography>
-                     <ItemCounter />
+                     <ItemCounter
+                        currentValue={tempCartProduct.quantity}
+                        maxValue={product.inStock}
+                        updatedQuantity={onUpdateQuantity}
+                     />
                      {/* Tallas */}
                      <SizeSelector
+                        // solo lectura del estado, quien esta pendiente
                         selectedSize={tempCartProduct.size}
                         sizes={product.sizes}
                         // Funcion que se ejecuta dentro del componente
@@ -65,7 +84,11 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                   {/* // * Agregar al carrito */}
 
                   {product.inStock > 0 ? (
-                     <Button color="secondary" className="circular-btn">
+                     <Button
+                        onClick={onAddProduct}
+                        color="secondary"
+                        className="circular-btn"
+                     >
                         {tempCartProduct.size
                            ? "Agregar al carrito"
                            : "Seleccione una talla"}
@@ -183,3 +206,5 @@ export default ProductPage;
 // if (!product) {
 //    return <h1>No existe</h1>;
 // }
+
+// * la cantidad deberia esta relacionado en base a la cantidad de talla que posea en el inventario
