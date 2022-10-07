@@ -103,6 +103,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       <CartContext.Provider
          value={{
             ...state,
+            cart: state.cart,
 
             // Methods
             addProductToCart,

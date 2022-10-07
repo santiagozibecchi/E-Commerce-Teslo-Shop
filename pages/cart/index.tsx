@@ -11,6 +11,7 @@ import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
 
 const CardPage = () => {
+
    return (
       <ShopLayout
          title={`Carrito - 3`}

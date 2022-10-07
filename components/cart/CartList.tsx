@@ -9,15 +9,18 @@ import {
    Link,
    Typography,
 } from "@mui/material";
+import { CartContext } from "../../context";
+import { useContext } from "react";
+
 import { initialData } from "../../database/products";
 import { ItemCounter } from "../ui";
 // Este componente debe recibir de algun o leerlo de lugar, los productos que voy a mostrar en el carrito de compras.
 
-const productsInCart = [
-   initialData.products[0],
-   initialData.products[3],
-   initialData.products[5],
-];
+// const productsInCart = [
+//    initialData.products[0],
+//    initialData.products[3],
+//    initialData.products[5],
+// ];
 
 // Para evitar que el cliente pueda editar la orden
 interface Props {
@@ -25,6 +28,8 @@ interface Props {
 }
 
 export const CartList: FC<Props> = ({ editable }) => {
+   const { cart: productsInCart } = useContext(CartContext);
+
    return (
       <>
          {productsInCart.map((product) => (
@@ -35,7 +40,7 @@ export const CartList: FC<Props> = ({ editable }) => {
                      <Link>
                         <CardActionArea>
                            <CardMedia
-                              image={`/products/${product.images[0]}`}
+                              image={`/products/${product.images}`}
                               component="img"
                               sx={{ borderRadius: "5px" }}
                            />
@@ -52,9 +57,16 @@ export const CartList: FC<Props> = ({ editable }) => {
 
                      {/* Condicional ya que en un determinado punto no podra volver a modificar la cantidad*/}
                      {editable ? (
-                        <ItemCounter />
+                        <ItemCounter
+                           currentValue={product.quantity}
+                           updatedQuantity={() => {}}
+                           maxValue={10}
+                        />
                      ) : (
-                        <Typography variant="body2">Cantidad: 3</Typography>
+                        <Typography variant="body2">
+                           {product.quantity}{" "}
+                           {product.quantity > 1 ? "productos" : "producto"}
+                        </Typography>
                      )}
                   </Box>
                </Grid>

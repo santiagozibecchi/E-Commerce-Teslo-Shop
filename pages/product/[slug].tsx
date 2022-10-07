@@ -52,7 +52,6 @@ const ProductPage: NextPage<Props> = ({ product }) => {
       if (!tempCartProduct.size) return;
 
       addProductToCart(tempCartProduct);
-      console.log({ tempCartProduct });
       router.push("/cart");
    };
 
