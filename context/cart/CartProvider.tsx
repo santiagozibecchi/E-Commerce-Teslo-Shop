@@ -1,4 +1,5 @@
-import { FC, PropsWithChildren, useReducer } from "react";
+import { FC, PropsWithChildren, useEffect, useReducer } from "react";
+import Cookie from "js-cookie";
 import { ICartProduct } from "../../interfaces";
 import { CartContext, cartReducer } from "./";
 // InitialState
@@ -12,6 +13,34 @@ const CART_INITIAL_STATE: CartState = {
 
 export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
    const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+
+   // Efecto para obtener las cookies y recargar el carrito
+   useEffect(() => {
+      // ! El payload da la cookie puede ser modificado del lado del navegador
+      try {
+         const cartFromCookie = Cookie.get("cart")
+            ? JSON.parse(Cookie.get("cart")!)
+            : [];
+         dispatch({
+            type: "[Cart] - LoadCart from cookies | storage",
+            payload: cartFromCookie,
+         });
+      } catch (error) {
+         // ! Si no logra parsear la cookie, seria porque alguien la manipulo, no tiene la forma que nosotros estamos esparando.
+         dispatch({
+            type: "[Cart] - LoadCart from cookies | storage",
+            payload: [],
+         });
+      }
+   }, []);
+
+   // Cuando los productos de mi carrito cambien, disparo un efecto para agregar productos a la cookie
+   useEffect(() => {
+      if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
+
+      // La siguiente linea de codigo es valida pero genero un [] al actualizar la página, esto sólo pasa en desarrollo por el modo estricto.
+      // Cookie.set("cart", JSON.stringify(state.cart));
+   }, [state.cart]);
 
    const addProductToCart = (product: ICartProduct) => {
       // ! Nivel 1
