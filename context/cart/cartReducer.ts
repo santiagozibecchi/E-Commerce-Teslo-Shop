@@ -7,7 +7,8 @@ type CartActionType =
         payload: ICartProduct[];
      }
    | { type: "[Cart] - Update products in cart"; payload: ICartProduct[] }
-   | { type: "[Cart] - Change Product Cart Quantity"; payload: ICartProduct };
+   | { type: "[Cart] - Change Product Cart Quantity"; payload: ICartProduct }
+   | { type: "[Cart] - Remove product in cart"; payload: ICartProduct };
 
 export const cartReducer = (
    state: CartState,
@@ -29,7 +30,7 @@ export const cartReducer = (
          return {
             ...state,
             cart: state.cart.map((product) => {
-               // si el _id o el sizr son diferentes, no es el producto que quiero actualizar
+               // si el _id o el size son diferentes, no es el producto que quiero actualizar
                if (product._id !== action.payload._id) return product;
                if (product.size !== action.payload.size) return product;
 
@@ -41,7 +42,49 @@ export const cartReducer = (
             }),
          };
 
+      case "[Cart] - Remove product in cart":
+         return {
+            ...state,
+            cart: state.cart.filter(
+               (product) =>
+                  !(
+                     product._id === action.payload._id &&
+                     product.size === action.payload.size
+                  )
+            ),
+
+            /*{
+               const allProductById = state.cart.filter(
+                  (product) => product._id === action.payload._id
+               );
+               const productByIdAndSize = allProductById.find(
+                  (p) => p.size === action.payload.size
+               );
+
+               if (product !== productByIdAndSize) {
+                  return product;
+               }
+            }
+            
+            ),*/
+         };
+
       default:
          return state;
    }
 };
+
+// * Forma corta para elimiar un producto
+// cart: state.cart.filter(product => !(product._id === action.payload._id && product.size === action.payload.size))
+// En sintesis, lo que estoy haciendo primero es, encontrar dentro del arreglo de productos el producto que coincida con el que quiero eliminar, luego lo niego para que devuelva todos, menos al que le estoy haciendo click.
+// Otra forma:
+/*
+   ----------
+   if (product._id === action.payload._id && product.size === action.payload.size) {
+      return false;
+      * regreso falso porque no es el articulo que quiero evaluar.
+   }
+
+   return true;
+   -----------
+*/
