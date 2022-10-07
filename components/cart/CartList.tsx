@@ -12,8 +12,9 @@ import {
 import { CartContext } from "../../context";
 import { useContext } from "react";
 
-import { initialData } from "../../database/products";
+// import { initialData } from "../../database/products";
 import { ItemCounter } from "../ui";
+import { ICartProduct } from "../../interfaces";
 // Este componente debe recibir de algun o leerlo de lugar, los productos que voy a mostrar en el carrito de compras.
 
 // const productsInCart = [
@@ -28,15 +29,29 @@ interface Props {
 }
 
 export const CartList: FC<Props> = ({ editable }) => {
-   const { cart: productsInCart } = useContext(CartContext);
+   const { cart: productsInCart, updateCartQuantity } = useContext(CartContext);
+
+   const onNewCartQuantityValue = (
+      product: ICartProduct,
+      newQuantityValue: number
+   ) => {
+      product.quantity = newQuantityValue;
+      // mando el producto con el valor actualizado
+      updateCartQuantity(product);
+   };
 
    return (
       <>
          {productsInCart.map((product) => (
-            <Grid container spacing={1} sx={{ mb: 1 }} key={product.slug}>
+            <Grid
+               container
+               spacing={1}
+               sx={{ mb: 1 }}
+               key={product.slug + product.size}
+            >
                <Grid item xs={3.2}>
                   {/* TODO: Llevar a la pagina del producto */}
-                  <NextLink href="/product/slug" passHref>
+                  <NextLink href={`/product/${product.slug}`} passHref>
                      <Link>
                         <CardActionArea>
                            <CardMedia
@@ -52,14 +67,16 @@ export const CartList: FC<Props> = ({ editable }) => {
                   <Box display="flex" flexDirection="column">
                      <Typography variant="body2">{product.title}</Typography>
                      <Typography variant="body2">
-                        Talla: <strong>M</strong>
+                        Talla: <strong>{product.size}</strong>
                      </Typography>
 
                      {/* Condicional ya que en un determinado punto no podra volver a modificar la cantidad*/}
                      {editable ? (
                         <ItemCounter
                            currentValue={product.quantity}
-                           updatedQuantity={() => {}}
+                           updatedQuantity={(newQuantity) =>
+                              onNewCartQuantityValue(product, newQuantity)
+                           }
                            maxValue={10}
                         />
                      ) : (
