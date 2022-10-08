@@ -5,7 +5,7 @@ export const signToken = (_id: string, email: string) => {
       throw new Error("No hay semilla de JWT - Revisar variables de entorno");
    }
 
-   jwt.sign(
+   return jwt.sign(
       {
          // payload - lo que voy a grabar
          _id,
