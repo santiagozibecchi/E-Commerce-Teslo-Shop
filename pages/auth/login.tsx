@@ -8,6 +8,7 @@ import { styled } from "@mui/material/styles";
 // import Woman2OutlinedIcon from "@mui/icons-material/Woman2Outlined";
 // import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
 import styles from "./Login&Register.module.css";
+import { validations } from "../../utils";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
    "& fieldset": {
@@ -54,6 +55,7 @@ const LoginPage = () => {
       handleSubmit,
       formState: { errors },
    } = useForm<FormData>();
+   console.log({ errors });
 
    const onLoginUser = (data: FormData) => {
       console.log({ data });
@@ -61,7 +63,7 @@ const LoginPage = () => {
 
    return (
       <AuthLayout title={"Ingresar"}>
-         <form onSubmit={handleSubmit(onLoginUser)}>
+         <form onSubmit={handleSubmit(onLoginUser)} noValidate>
             <Box className={styles.loginForm}>
                <Box
                   sx={{
@@ -88,16 +90,30 @@ const LoginPage = () => {
                            label="Correo"
                            variant="outlined"
                            fullWidth
-                           {...register("email")}
+                           {...register("email", {
+                              required: "Esta campo es requerido",
+                              validate: (val) => validations.isEmail(val),
+                           })}
+                           error={!!errors.email}
+                           helperText={errors.email?.message}
                         />
                      </Grid>
                      <Grid item xs={12}>
                         <StyledTextField
+                           type="password"
                            autoComplete="off"
                            label="Contraseña"
                            variant="outlined"
                            fullWidth
-                           {...register("password")}
+                           {...register("password", {
+                              required: "Esta campo es requerido",
+                              minLength: {
+                                 value: 6,
+                                 message: "Mínimo 6 caracteres",
+                              },
+                           })}
+                           error={!!errors.password}
+                           helperText={errors.password?.message}
                         />
                      </Grid>
                      <Grid item xs={12}>
