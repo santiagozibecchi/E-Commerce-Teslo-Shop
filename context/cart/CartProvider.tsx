@@ -34,12 +34,34 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       }
    }, []);
 
-   // Cuando los productos de mi carrito cambien, disparo un efecto para agregar productos a la cookie
+   // Cada vez que el estado del carrito cambia, disparo un efecto para agregar productos a la cookie
    useEffect(() => {
       if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
 
       // La siguiente linea de codigo es valida pero genero un [] al actualizar la página, esto sólo pasa en desarrollo por el modo estricto.
       // Cookie.set("cart", JSON.stringify(state.cart));
+   }, [state.cart]);
+
+   // Efecto encargado de actualizar el numero de items, el total a pagar, impuestos, etc
+   useEffect(() => {
+      const numberOfItems = state.cart.reduce(
+         (prev, current) => current.quantity + prev,
+         0
+      );
+      const subTotal = state.cart.reduce(
+         (prev, current) => current.price * current.quantity + prev,
+         0
+      );
+      const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
+
+      const orderSummary = {
+         numberOfItems,
+         subTotal,
+         tax: subTotal * taxRate,
+         total: subTotal * (1 + taxRate),
+      };
+
+      console.log(orderSummary);
    }, [state.cart]);
 
    const addProductToCart = (product: ICartProduct) => {
@@ -118,8 +140,8 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
 
             // Methods
             addProductToCart,
-            updateCartQuantity,
             removeCardProduct,
+            updateCartQuantity,
          }}
       >
          {children}
