@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 // import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
 import styles from "./Login&Register.module.css";
 import { validations } from "../../utils";
+import { tesloApi } from "../../api";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
    "& fieldset": {
@@ -55,10 +56,21 @@ const LoginPage = () => {
       handleSubmit,
       formState: { errors },
    } = useForm<FormData>();
-   console.log({ errors });
 
-   const onLoginUser = (data: FormData) => {
-      console.log({ data });
+   const onLoginUser = async ({ email, password }: FormData) => {
+      try {
+         const { data } = await tesloApi.post("/user/login", {
+            email,
+            password,
+         });
+
+         const { token, user } = data;
+
+         console.log({ token, user });
+      } catch (error) {
+         console.log(error);
+         console.log("Error en las credenciales");
+      }
    };
 
    return (
