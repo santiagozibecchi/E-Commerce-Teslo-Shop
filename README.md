@@ -47,6 +47,8 @@ docker-compose up -d
 
 -  Autenticación: admin como api tendran su propia autenticacion. Admin se implementaran ciertos middlewares para que la persona tenga que estar autenticada. Cuando un usuario se crea una cuenta con una red social quiero que tambien se transforme en un usuario de mi base de datos.
 
+-  React Hook Form
+
 ## SSP
 
 Como estamos del lado del servidor tambien podemos acceder a las cookies. Podriamos utilizarlas para regresar algo de interes.
