@@ -1,8 +1,16 @@
-import React from "react";
+import { useState } from "react";
 import NextLink from "next/link";
 import { AuthLayout } from "../../components/layouts";
 import { useForm } from "react-hook-form";
-import { Box, Button, Grid, Link, TextField, Typography } from "@mui/material";
+import {
+   Box,
+   Button,
+   Chip,
+   Grid,
+   Link,
+   TextField,
+   Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 // import ManOutlinedIcon from "@mui/icons-material/ManOutlined";
 // import Woman2OutlinedIcon from "@mui/icons-material/Woman2Outlined";
@@ -10,6 +18,7 @@ import { styled } from "@mui/material/styles";
 import styles from "./Login&Register.module.css";
 import { validations } from "../../utils";
 import { tesloApi } from "../../api";
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
    "& fieldset": {
@@ -56,8 +65,11 @@ const LoginPage = () => {
       handleSubmit,
       formState: { errors },
    } = useForm<FormData>();
+   const [showError, setShowError] = useState(false);
 
    const onLoginUser = async ({ email, password }: FormData) => {
+      setShowError(false);
+
       try {
          const { data } = await tesloApi.post("/user/login", {
             email,
@@ -68,9 +80,12 @@ const LoginPage = () => {
 
          console.log({ token, user });
       } catch (error) {
-         console.log(error);
+         setShowError(true);
          console.log("Error en las credenciales");
+         setTimeout(() => setShowError(false), 3000);
       }
+
+      // TODO: navegar a la pantalla que el usuario estaba anteriormente y si no estaba en ningun lugar, dejarlo en el home
    };
 
    return (
@@ -93,6 +108,16 @@ const LoginPage = () => {
                         >
                            Iniciar Sesión
                         </Typography>
+                        <Chip
+                           label="Usuario o contraseña incorrecto"
+                           color="error"
+                           icon={<ErrorOutline />}
+                           className="fadeIn"
+                           sx={{
+                              display: showError ? "flex" : "none",
+                              gap: 3,
+                           }}
+                        />
                      </Grid>
                      <Grid item xs={12}>
                         <StyledTextField
