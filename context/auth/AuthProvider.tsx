@@ -26,6 +26,11 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
    const checkToken = async () => {
       // No necesito mandarle ninguna data mas, porque axios ya manda las cookies
 
+      // Si no encuentra el token, evitar peticion al backend
+      if (!Cookies.get("token")) {
+         return;
+      }
+
       try {
          const { data } = await tesloApi.get("/user/validate-token");
          const { token, user } = data;

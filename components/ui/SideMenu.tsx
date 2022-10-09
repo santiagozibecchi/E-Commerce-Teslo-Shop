@@ -12,23 +12,25 @@ import {
    ListItemText,
    ListSubheader,
 } from "@mui/material";
-import {
-   AccountCircleOutlined,
-   AdminPanelSettings,
-   CategoryOutlined,
-   ConfirmationNumberOutlined,
-   EscalatorWarningOutlined,
-   FemaleOutlined,
-   LoginOutlined,
-   MaleOutlined,
-   SearchOutlined,
-   VpnKeyOutlined,
-} from "@mui/icons-material";
-import { UiContext } from "../../context";
+import { AuthContext, UiContext } from "../../context";
 import { useRouter } from "next/router";
+
+// Material-icons-import to evit bundler
+import AccountCircleOutlined from "@mui/icons-material/AccountCircleOutlined";
+import AdminPanelSettings from "@mui/icons-material/AdminPanelSettings";
+import CategoryOutlined from "@mui/icons-material/CategoryOutlined";
+import ConfirmationNumberOutlined from "@mui/icons-material/ConfirmationNumberOutlined";
+import EscalatorWarningOutlined from "@mui/icons-material/EscalatorWarningOutlined";
+import FemaleOutlined from "@mui/icons-material/FemaleOutlined";
+import LoginOutlined from "@mui/icons-material/LoginOutlined";
+import MaleOutlined from "@mui/icons-material/MaleOutlined";
+import SearchOutlined from "@mui/icons-material/SearchOutlined";
+import VpnKeyOutlined from "@mui/icons-material/VpnKeyOutlined";
 
 export const SideMenu = () => {
    const { toggleSideMenu, isMenuOpen } = useContext(UiContext);
+   const { isLoggedIn, user } = useContext(AuthContext);
+
    const router = useRouter();
    // Lo asocio con el value del input de busqueda
    const [searchTerm, setSearchTerm] = useState("");
@@ -73,19 +75,39 @@ export const SideMenu = () => {
                   />
                </ListItem>
 
-               <ListItem button>
-                  <ListItemIcon>
-                     <AccountCircleOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={"Perfil"} />
-               </ListItem>
+               {isLoggedIn && (
+                  <>
+                     <ListItem button>
+                        <ListItemIcon>
+                           <AccountCircleOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary={"Perfil"} />
+                     </ListItem>
 
-               <ListItem button>
-                  <ListItemIcon>
-                     <ConfirmationNumberOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={"Mis Ordenes"} />
-               </ListItem>
+                     <ListItem button>
+                        <ListItemIcon>
+                           <ConfirmationNumberOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary={"Mis Ordenes"} />
+                     </ListItem>
+                  </>
+               )}
+
+               {isLoggedIn ? (
+                  <ListItem button>
+                     <ListItemIcon>
+                        <LoginOutlined />
+                     </ListItemIcon>
+                     <ListItemText primary={"Salir"} />
+                  </ListItem>
+               ) : (
+                  <ListItem button>
+                     <ListItemIcon>
+                        <VpnKeyOutlined />
+                     </ListItemIcon>
+                     <ListItemText primary={"Ingresar"} />
+                  </ListItem>
+               )}
 
                <ListItem
                   onClick={() => navigateTo("/category/men")}
@@ -120,43 +142,33 @@ export const SideMenu = () => {
                   <ListItemText primary={"Niños"} />
                </ListItem>
 
-               <ListItem button>
-                  <ListItemIcon>
-                     <VpnKeyOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={"Ingresar"} />
-               </ListItem>
-
-               <ListItem button>
-                  <ListItemIcon>
-                     <LoginOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={"Salir"} />
-               </ListItem>
-
                {/* Admin */}
-               <Divider />
-               <ListSubheader>Admin Panel</ListSubheader>
+               {user?.role === "admin" && (
+                  <>
+                     <Divider />
+                     <ListSubheader>Admin Panel</ListSubheader>
 
-               <ListItem button>
-                  <ListItemIcon>
-                     <CategoryOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={"Productos"} />
-               </ListItem>
-               <ListItem button>
-                  <ListItemIcon>
-                     <ConfirmationNumberOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={"Ordenes"} />
-               </ListItem>
+                     <ListItem button>
+                        <ListItemIcon>
+                           <CategoryOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary={"Productos"} />
+                     </ListItem>
+                     <ListItem button>
+                        <ListItemIcon>
+                           <ConfirmationNumberOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary={"Ordenes"} />
+                     </ListItem>
 
-               <ListItem button>
-                  <ListItemIcon>
-                     <AdminPanelSettings />
-                  </ListItemIcon>
-                  <ListItemText primary={"Usuarios"} />
-               </ListItem>
+                     <ListItem button>
+                        <ListItemIcon>
+                           <AdminPanelSettings />
+                        </ListItemIcon>
+                        <ListItemText primary={"Usuarios"} />
+                     </ListItem>
+                  </>
+               )}
             </List>
          </Box>
       </Drawer>
