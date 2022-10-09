@@ -65,6 +65,7 @@ const LoginPage = () => {
       handleSubmit,
       formState: { errors },
    } = useForm<FormData>();
+
    const [showError, setShowError] = useState(false);
 
    const onLoginUser = async ({ email, password }: FormData) => {
