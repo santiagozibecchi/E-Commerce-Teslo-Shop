@@ -45,7 +45,7 @@ docker-compose up -d
 
 -  Las busquedas se realizan por tags o por slug. Se crea un indice para conectar dos campos que nos ayude a hacer las busquedas. [q].ts q: query
 
--  Autenticación: admin como api tendran su propia autenticacion. Admin se implementaran ciertos middlewares para que la persona tenga que estar autenticada. Cuando un usuario se crea una cuenta con una red social quiero que tambien se transforme en un usuario de mi base de datos.
+-  Autenticación: admin como api tendran su propia autenticacion. Admin se implementaran ciertos middlewares para que la persona tenga que estar autenticada. Cuando un usuario se crea una cuenta con una red social quiero que tambien se transforme en un usuario de mi base de datos. revalidacion del token cada vez que el usuario cambia de pantalla.
 
 -  React Hook Form
 
