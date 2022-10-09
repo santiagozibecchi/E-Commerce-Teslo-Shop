@@ -104,6 +104,7 @@ export const SideMenu = () => {
                   <ListItem
                      button
                      onClick={() =>
+                        // Envio un query de referecia para saber cual fue la ultima pagina donde estaba el usuario.
                         navigateTo(`/auth/login?p=${router.asPath}`)
                      }
                   >

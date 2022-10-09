@@ -44,7 +44,7 @@ const registerUser = async (
       });
    }
 
-   if (name.length < 6) {
+   if (name.length < 2) {
       return res.status(400).json({
          message: "El nombre debe de ser de 2 o más caracteres",
       });

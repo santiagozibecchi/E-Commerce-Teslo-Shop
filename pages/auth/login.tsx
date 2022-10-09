@@ -63,6 +63,7 @@ type FormData = {
 
 const LoginPage = () => {
    const router = useRouter();
+   console.log(router.query);
 
    const { loginUser } = useContext(AuthContext);
 
@@ -172,7 +173,15 @@ const LoginPage = () => {
                         display="flex"
                         justifyContent="flex-end"
                      >
-                        <NextLink href="/auth/register" passHref>
+                        <NextLink
+                           href={
+                              // Condicion porq podria venir undefined
+                              router.query.p
+                                 ? `/auth/register?p=${router.query.p}`
+                                 : `/auth/register`
+                           }
+                           passHref
+                        >
                            <Link underline="always">¿No tienes cuenta?</Link>
                         </NextLink>
                      </Grid>
