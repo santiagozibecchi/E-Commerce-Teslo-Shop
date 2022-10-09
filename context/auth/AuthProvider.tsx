@@ -65,7 +65,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
                message,
             };
          }
-         //  Error inmprevisto
+         //  Error inprevisto
          return {
             hasError: true,
             message: "No se pudo crear el usuario, intente de nuevo",
