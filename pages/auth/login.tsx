@@ -86,7 +86,8 @@ const LoginPage = () => {
       }
 
       // TODO: navegar a la pantalla que el usuario estaba anteriormente y si no estaba en ningun lugar, dejarlo en el home
-      router.replace("/");
+      const destination = router.query.p?.toString() || "/";
+      router.replace(destination);
    };
 
    return (

@@ -29,7 +29,7 @@ import VpnKeyOutlined from "@mui/icons-material/VpnKeyOutlined";
 
 export const SideMenu = () => {
    const { toggleSideMenu, isMenuOpen } = useContext(UiContext);
-   const { isLoggedIn, user } = useContext(AuthContext);
+   const { isLoggedIn, user, logout } = useContext(AuthContext);
 
    const router = useRouter();
    // Lo asocio con el value del input de busqueda
@@ -94,14 +94,19 @@ export const SideMenu = () => {
                )}
 
                {isLoggedIn ? (
-                  <ListItem button>
+                  <ListItem button onClick={logout}>
                      <ListItemIcon>
                         <LoginOutlined />
                      </ListItemIcon>
                      <ListItemText primary={"Salir"} />
                   </ListItem>
                ) : (
-                  <ListItem button>
+                  <ListItem
+                     button
+                     onClick={() =>
+                        navigateTo(`/auth/login?p=${router.asPath}`)
+                     }
+                  >
                      <ListItemIcon>
                         <VpnKeyOutlined />
                      </ListItemIcon>
