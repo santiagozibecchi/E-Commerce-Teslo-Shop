@@ -60,6 +60,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       }
    }, []);
 
+   // * Cargar la informacion desde las cookies al actualizar la página, es decir, mantiene persistente el estado de este contexto.
    // Agregar shippingAddress automaticamente al estado
    useEffect(() => {
       // En el caso de que estemos cargando la app por primera vez y no tengamos ningun valor guardado
@@ -185,6 +186,20 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       dispatch({ type: "[Cart] - Remove product in cart", payload: product });
    };
 
+   // * Accion que tengo que mandar para actualizar el state
+   const updateAddress = (address: ShippingAddress) => {
+      Cookie.set("firstName", address.firstName);
+      Cookie.set("lastName", address.lastName);
+      Cookie.set("address", address.address);
+      Cookie.set("address2", address.address2 || "");
+      Cookie.set("zip", address.zip);
+      Cookie.set("city", address.city);
+      Cookie.set("country", address.country);
+      Cookie.set("phone", address.phone);
+
+      dispatch({ type: "[Cart] - Update Address", payload: address });
+   };
+
    return (
       <CartContext.Provider
          value={{
@@ -195,6 +210,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
             addProductToCart,
             removeCardProduct,
             updateCartQuantity,
+            updateAddress,
          }}
       >
          {children}
