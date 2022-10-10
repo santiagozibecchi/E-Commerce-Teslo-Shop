@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { ShippingAddress } from "./";
 import { ICartProduct } from "../../interfaces";
 
 interface ContextProps {
@@ -8,6 +9,8 @@ interface ContextProps {
    tax: number;
    total: number;
    isLoaded: boolean;
+
+   shippingAddress?: ShippingAddress;
 
    //  Methos
    addProductToCart: (product: ICartProduct) => void;

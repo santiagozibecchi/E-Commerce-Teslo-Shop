@@ -10,6 +10,20 @@ export interface CartState {
    subTotal: number;
    tax: number;
    total: number;
+
+   // Opcional porq puede ser que la persona no lo tenga al inicial la aplicacion
+   shippingAddress?: ShippingAddress;
+}
+
+export interface ShippingAddress {
+   firstName: string;
+   lastName: string;
+   address: string;
+   address2?: string;
+   zip: string;
+   city: string;
+   country: string;
+   phone: string;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -19,6 +33,8 @@ const CART_INITIAL_STATE: CartState = {
    subTotal: 0,
    tax: 0,
    total: 0,
+
+   shippingAddress: undefined,
 };
 
 export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -44,7 +60,30 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       }
    }, []);
 
-   // Cada vez que el estado del carrito cambia, disparo un efecto para agregar productos a la cookie
+   // Agregar shippingAddress automaticamente al estado
+   useEffect(() => {
+      // En el caso de que estemos cargando la app por primera vez y no tengamos ningun valor guardado
+      // Solo si tenemos firstName cargamos, no hace falta grabar todos los campos ya que se graba todo al mismo tiempo
+      if (Cookie.get("firstName")) {
+         const shippingAddress = {
+            firstName: Cookie.get("firstName") || "",
+            lastName: Cookie.get("lastName") || "",
+            address: Cookie.get("address") || "",
+            address2: Cookie.get("address2") || "",
+            zip: Cookie.get("zip") || "",
+            city: Cookie.get("city") || "",
+            country: Cookie.get("country") || "",
+            phone: Cookie.get("phone") || "",
+         };
+
+         dispatch({
+            type: "[Cart] - LoadAddress from cookies",
+            payload: shippingAddress,
+         });
+      }
+   }, []);
+
+   // Cada vez que el estado del carrito cambia, disparo un efecto para agregar productos a la cookie.
    useEffect(() => {
       if (state.cart.length > 0) Cookie.set("cart", JSON.stringify(state.cart));
 
