@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import {
    Box,
    Button,
@@ -7,10 +8,26 @@ import {
    Grid,
    Typography,
 } from "@mui/material";
-import { CartList, OrderSummary } from "../../components/cart";
+
+import { CartContext } from "../../context";
 import { ShopLayout } from "../../components/layouts";
+import { CartList, OrderSummary } from "../../components/cart";
+import { useRouter } from "next/router";
 
 const CardPage = () => {
+   const { isLoaded, cart } = useContext(CartContext);
+   const router = useRouter();
+
+   useEffect(() => {
+      if (isLoaded && cart.length === 0) {
+         router.replace("/cart/empty");
+      }
+   }, [isLoaded, cart, router]);
+
+   // Evitar el renderizado del carrito al cliente
+   if (!isLoaded || cart.length === 0) {
+      return <></>;
+   }
 
    return (
       <ShopLayout

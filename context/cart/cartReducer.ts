@@ -28,6 +28,7 @@ export const cartReducer = (
          return {
             ...state,
             cart: action.payload,
+            isLoaded: true,
          };
       case "[Cart] - Update products in cart":
          return {
@@ -80,8 +81,8 @@ export const cartReducer = (
       case "[Cart] - Update order summary":
          return {
             ...state,
-            ...action.payload
-         }
+            ...action.payload,
+         };
 
       default:
          return state;
