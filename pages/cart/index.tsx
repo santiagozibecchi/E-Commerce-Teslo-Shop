@@ -52,10 +52,12 @@ const CardPage = () => {
                      {/* Resumen de la order - OrdenSummary */}
                      <OrderSummary />
                      <Box sx={{ mt: 3 }}>
+                        {/* En esta caso no es necesario cargarlo de ante mano */}
                         <Button
                            color="secondary"
                            className="circular-btn"
                            fullWidth
+                           href="/checkout/address"
                         >
                            Checkout
                         </Button>

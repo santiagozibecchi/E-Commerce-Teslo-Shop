@@ -1,3 +1,5 @@
+import { GetServerSideProps } from "next";
+
 import {
    Typography,
    Grid,
@@ -9,8 +11,8 @@ import {
    Box,
    Button,
 } from "@mui/material";
-import React from "react";
 import { ShopLayout } from "../../components/layouts";
+import { jwt } from "../../utils";
 
 const AddressPage = () => {
    return (
@@ -78,6 +80,37 @@ const AddressPage = () => {
          </Box>
       </ShopLayout>
    );
+};
+
+// Siempre que el cliente haga una request
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+   // Se ejecuta antes de renderizar la pagina
+
+   // Recordar que las cookies viajan por request-Time, por las peticiones
+   const { token = "" } = req.cookies;
+
+   let isValidToken = false;
+
+   try {
+      // tenomos token válido
+      await jwt.isValidToken(token);
+      isValidToken = true;
+   } catch (error) {
+      isValidToken = false;
+   }
+
+   if (!isValidToken) {
+      return {
+         redirect: {
+            permanent: false,
+            destination: "/auth/login?p=/checkout/address",
+         },
+      };
+   }
+
+   return {
+      props: {},
+   };
 };
 
 export default AddressPage;
