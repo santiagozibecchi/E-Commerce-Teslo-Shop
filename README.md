@@ -47,6 +47,8 @@ docker-compose up -d
 
 -  Autenticación: admin como api tendran su propia autenticacion. Admin se implementaran ciertos middlewares para que la persona tenga que estar autenticada. Cuando un usuario se crea una cuenta con una red social quiero que tambien se transforme en un usuario de mi base de datos. revalidacion del token cada vez que el usuario cambia de pantalla. Condicional sobre cliente/administrador.
 
+-  Next Auth
+
 -  React Hook Form
 
 ## SSP

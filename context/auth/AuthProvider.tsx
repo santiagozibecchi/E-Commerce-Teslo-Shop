@@ -102,6 +102,15 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
    const logout = () => {
       Cookies.remove("token");
       Cookies.remove("cart");
+
+      Cookies.remove("firstName");
+      Cookies.remove("lastName");
+      Cookies.remove("address");
+      Cookies.remove("address2");
+      Cookies.remove("zip");
+      Cookies.remove("city");
+      Cookies.remove("country");
+      Cookies.remove("phone");
       // Hace un refresh de la aplicacion y al hacerlo se pierde todo el estado de la aplicacion
       router.reload();
    };
