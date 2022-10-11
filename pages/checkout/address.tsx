@@ -159,18 +159,8 @@ const AddressPage = () => {
                </Grid>
                <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                     {/* <InputLabel
-                        sx={{
-                           backgroundColor: "#FFF",
-                           padding: "5px",
-                           paddingRight: "20px",
-                           borderRadius: "12px",
-                           color: "black",
-                        }}
-                     >
-                        País
-                     </InputLabel> */}
                      <TextField
+                        key={Cookies.get("country") || countries[0].code}
                         select
                         defaultValue={shippingAddress?.country}
                         variant="filled"
