@@ -34,6 +34,12 @@ export const authOptions = {
       }),
    ],
 
+   // Custom Pages
+   pages: {
+      signIn: "auth/login",
+      newUser: "/auth/register",
+   },
+
    // Callbacks
    // Como quiero que se firme el jwt, que data es la que voy a grabar en los token
    callbacks: {

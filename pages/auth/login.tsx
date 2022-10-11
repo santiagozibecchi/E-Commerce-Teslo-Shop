@@ -1,5 +1,8 @@
 import { useContext, useState } from "react";
+import { GetServerSideProps } from "next";
+
 import NextLink from "next/link";
+import { getSession, signIn } from "next-auth/react";
 import { AuthLayout } from "../../components/layouts";
 import { useForm } from "react-hook-form";
 import {
@@ -78,17 +81,19 @@ const LoginPage = () => {
    const onLoginUser = async ({ email, password }: FormData) => {
       setShowError(false);
 
-      const isValidLogin = await loginUser(email, password);
+      await signIn("credentials", { email, password });
+      // Con autenticacion personalizada
+      // const isValidLogin = await loginUser(email, password);
 
-      if (!isValidLogin) {
-         setShowError(true);
-         setTimeout(() => setShowError(false), 3000);
-         return;
-      }
+      // if (!isValidLogin) {
+      //    setShowError(true);
+      //    setTimeout(() => setShowError(false), 3000);
+      //    return;
+      // }
 
-      // TODO: navegar a la pantalla que el usuario estaba anteriormente y si no estaba en ningun lugar, dejarlo en el home
-      const destination = router.query.p?.toString() || "/";
-      router.replace(destination);
+      // // navegar a la pantalla que el usuario estaba anteriormente y si no estaba en ningun lugar, dejarlo en el home
+      // const destination = router.query.p?.toString() || "/";
+      // router.replace(destination);
    };
 
    return (
@@ -236,6 +241,30 @@ const LoginPage = () => {
          </Box>
       </AuthLayout>
    );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({
+   req,
+   query,
+}) => {
+   const session = await getSession({ req });
+   const { p = "/" } = query;
+
+   if (session) {
+      return {
+         redirect: {
+            destination: p.toString(),
+            permanent: false,
+         },
+      };
+   }
+
+   return {
+      props: {},
+   };
 };
 
 export default LoginPage;
