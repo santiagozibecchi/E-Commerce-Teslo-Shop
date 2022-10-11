@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
+import { dbUsers } from "../../../database";
 
 export const authOptions = {
    // Configure one or more authentication providers
@@ -21,7 +22,10 @@ export const authOptions = {
             console.log({ credentials });
             // TODO Validar contra base de datos
 
-            return { name: "juan", correo: "juan@gmail.com", role: "admin" };
+            return await dbUsers.checkEmailPassword(
+               credentials?.email,
+               credentials?.password
+            );
          },
       }),
       GithubProvider({
