@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import { dbUsers } from "../../../database";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
    // Configure one or more authentication providers
    providers: [
       // ...add more providers here
@@ -38,6 +38,12 @@ export const authOptions = {
    pages: {
       signIn: "auth/login",
       newUser: "/auth/register",
+   },
+
+   session: {
+      maxAge: 259200, // 30 dias
+      strategy: "jwt",
+      updateAge: 86400,
    },
 
    // Callbacks

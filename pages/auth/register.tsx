@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { GetServerSideProps } from "next";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { getSession, signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context";
 
@@ -17,7 +19,7 @@ import {
 } from "@mui/material";
 import styles from "./Login&Register.module.css";
 import { validations } from "../../utils";
-import { tesloApi } from "../../api";
+// import { tesloApi } from "../../api";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import { useContext } from "react";
 
@@ -82,8 +84,10 @@ const RegisterPage = () => {
          return;
       }
 
-      const destination = router.query.p?.toString() || "/";
-      router.replace(destination);
+      // const destination = router.query.p?.toString() || "/";
+      // router.replace(destination);
+
+      await signIn("credentials", { email, password });
    };
 
    return (
@@ -221,6 +225,27 @@ const RegisterPage = () => {
          </Box>
       </AuthLayout>
    );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+   req,
+   query,
+}) => {
+   const session = await getSession({ req });
+   const { p = "/" } = query;
+
+   if (session) {
+      return {
+         redirect: {
+            destination: p.toString(),
+            permanent: false,
+         },
+      };
+   }
+
+   return {
+      props: {},
+   };
 };
 
 export default RegisterPage;
