@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useReducer, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -29,7 +29,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
    useEffect(() => {
       if (status === "authenticated") {
          console.log(data.user);
-         // TODO dispatch({ type: "[Auth] - Login", payload: data.user as IUser });
+         dispatch({ type: "[Auth] - Login", payload: data.user as IUser });
       }
    }, [status, data]);
 
@@ -112,9 +112,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
    };
 
    const logout = () => {
-      Cookies.remove("token");
       Cookies.remove("cart");
-
       Cookies.remove("firstName");
       Cookies.remove("lastName");
       Cookies.remove("address");
@@ -123,8 +121,13 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       Cookies.remove("city");
       Cookies.remove("country");
       Cookies.remove("phone");
+      // * NextAuth
+      signOut();
+
+      // * Para la autenticacion personalizada
       // Hace un refresh de la aplicacion y al hacerlo se pierde todo el estado de la aplicacion
-      router.reload();
+      // Cookies.remove("token");
+      // router.reload();
    };
 
    return (
