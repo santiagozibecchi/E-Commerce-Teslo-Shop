@@ -1,5 +1,7 @@
 import { FC, PropsWithChildren, useReducer, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+
 import Cookies from "js-cookie";
 import axios from "axios";
 import { AuthContext, authReducer } from "./";
@@ -21,29 +23,38 @@ const Auth_INITIAL_STATE: AuthState = {
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
    const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
    const router = useRouter();
+   const { data, status } = useSession();
 
    useEffect(() => {
-      checkToken();
-   }, []);
-
-   const checkToken = async () => {
-      // No necesito mandarle ninguna data mas, porque axios ya manda las cookies
-
-      // Si no encuentra el token, evitar peticion al backend
-      if (!Cookies.get("token")) {
-         return;
+      if (status === "authenticated") {
+         console.log(data.user);
+         // TODO dispatch({ type: "[Auth] - Login", payload: data.user as IUser });
       }
+   }, [status, data]);
 
-      try {
-         const { data } = await tesloApi.get("/user/validate-token");
-         const { token, user } = data;
-         Cookies.set("token", token);
+   // useEffect(() => {
+   //    checkToken();
+   // }, []);
 
-         dispatch({ type: "[Auth] - Login", payload: user });
-      } catch (error) {
-         Cookies.remove("token");
-      }
-   };
+   // Autenticacion personalizada
+   // const checkToken = async () => {
+   //    // No necesito mandarle ninguna data mas, porque axios ya manda las cookies
+
+   //    // Si no encuentra el token, evitar peticion al backend
+   //    if (!Cookies.get("token")) {
+   //       return;
+   //    }
+
+   //    try {
+   //       const { data } = await tesloApi.get("/user/validate-token");
+   //       const { token, user } = data;
+   //       Cookies.set("token", token);
+
+   //       dispatch({ type: "[Auth] - Login", payload: user });
+   //    } catch (error) {
+   //       Cookies.remove("token");
+   //    }
+   // };
 
    const loginUser = async (
       email: string,
