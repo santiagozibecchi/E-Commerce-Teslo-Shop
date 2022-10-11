@@ -20,14 +20,14 @@ export const authOptions = {
          // regresa null en caso de que la autenticacion falle o un objeto si todo pasa. Este tiene que tener la informacion que nosotros queremos que sea recibida para crear los token de autenticacion.
          async authorize(credentials) {
             console.log({ credentials });
-            // TODO Validar contra base de datos
-
+            // Validar contra base de datos y devuelve token
             return await dbUsers.checkEmailPassword(
-               credentials?.email,
-               credentials?.password
+               credentials!.email,
+               credentials!.password
             );
          },
       }),
+
       GithubProvider({
          clientId: process.env.GITHUB_ID as string,
          clientSecret: process.env.GITHUB_SECRET as string,
@@ -35,7 +35,7 @@ export const authOptions = {
    ],
 
    // Callbacks
-   // Como quiero que se firme el jwt, que data es la qie voy a grabar en los token
+   // Como quiero que se firme el jwt, que data es la que voy a grabar en los token
    callbacks: {
       async jwt({ token, account, user }: any) {
          // console.log("------------------ JWT -----------------");
@@ -44,15 +44,15 @@ export const authOptions = {
             token.accessToken = account.access_token;
 
             switch (account.type) {
+               case "oauth":
+                  token.user = await dbUsers.oAuthToDbUser(
+                     user.email || "",
+                     user.name || ""
+                  );
+                  break;
+
                case "credentials":
                   token.user = user;
-                  break;
-
-               case "oauth":
-                  // TODO crear usuario o verificar si existe en DB
-                  break;
-
-               default:
                   break;
             }
          }
