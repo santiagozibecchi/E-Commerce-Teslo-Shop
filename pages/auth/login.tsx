@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-// import { GetServerSideProps } from "next";
+import { GetServerSideProps } from "next";
 
 import NextLink from "next/link";
 import { getSession, signIn, getProviders } from "next-auth/react";
+import { useRouter } from "next/router";
 import { AuthLayout } from "../../components/layouts";
 import { useForm } from "react-hook-form";
 import {
@@ -24,7 +25,6 @@ import styles from "./Login&Register.module.css";
 import { validations } from "../../utils";
 // import { tesloApi } from "../../api";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import { useRouter } from "next/router";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
    "& fieldset": {
@@ -67,7 +67,8 @@ type FormData = {
 
 const LoginPage = () => {
    const router = useRouter();
-
+   // const destination = router.query.p?.toString() || "/";
+   // console.log(destination);
    // const { loginUser } = useContext(AuthContext);
 
    const {
@@ -89,7 +90,11 @@ const LoginPage = () => {
    const onLoginUser = async ({ email, password }: FormData) => {
       setShowError(false);
 
-      await signIn("credentials", { email, password });
+      await signIn("credentials", {
+         email,
+         password,
+         // callbackUrl: `${window.location.origin}/${destination}`,
+      });
       // Con autenticacion personalizada
       // const isValidLogin = await loginUser(email, password);
 
@@ -278,28 +283,34 @@ const LoginPage = () => {
    );
 };
 
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
+// * Verifico el token del lado del servidor para saber si inicio sesion
+// ? Lo redirecciono a la pagina donde se encontraba anteriormente
+// : Muestro la pagina del login
 
-// export const getServerSideProps: GetServerSideProps = async ({
-//    req,
-//    query,
-// }) => {
-//    const session = await getSession({ req });
-//    const { p = "/" } = query;
+// cuando inicia sesion por primera vez, el backend esta pendiente de las cookies y lo redireccionara hacia donde estuvo la ultima vez gracias a el middleware
+export const getServerSideProps: GetServerSideProps = async ({
+   req,
+   query,
+}) => {
+   const session = await getSession({ req });
+   // El query p, para recuperar la ultima pagina que la persona visito.
+   const { callbackUrl = "/" } = query;
+   console.log(callbackUrl);
 
-//    if (session) {
-//       return {
-//          redirect: {
-//             destination: p.toString(),
-//             permanent: false,
-//          },
-//       };
-//    }
+   if (session) {
+      return {
+         redirect: {
+            destination: callbackUrl.toString(),
+            permanent: false,
+         },
+      };
+   }
 
-//    return {
-//       props: {},
-//    };
-// };
+   return {
+      props: {},
+   };
+};
 
 export default LoginPage;
+
+// http://localhost:3000/auth/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fcheckout%2Faddress

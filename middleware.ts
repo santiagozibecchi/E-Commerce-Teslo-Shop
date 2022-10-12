@@ -1,23 +1,36 @@
-// middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+// import { withAuth } from "next-auth/middleware";
+export { default } from "next-auth/middleware";
+// import { NextResponse, NextRequest } from "next/server";
+// import { getToken } from "next-auth/jwt";
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(req: NextRequest) {
-   const session = await getToken({ req });
+// export async function middleware(req: NextRequest) {
+//    const session = await getToken({ req });
 
-   if (!session) {
-      const { protocol, host, pathname } = req.nextUrl;
-      return NextResponse.redirect(
-         `${protocol}//${host}/auth/login?p=${pathname}`
-      );
-   }
+//    const { pathname } = req.nextUrl;
+//    if (!session) {
+//       const url = req.nextUrl.clone();
+//       url.pathname = pathname;
 
-   return NextResponse.next();
-}
+//       return NextResponse.redirect(url);
+//    }
 
-// See "Matching Paths" below to learn more
+//    return NextResponse.next();
+// }
+
+// export default withAuth(async function middleware(req: NextRequest) {
+//    const session = await getToken({ req });
+
+//    const { pathname } = req.nextUrl;
+
+//    if (!session) {
+//       const url = req.nextUrl.clone();
+//       url.pathname = pathname;
+
+//       return NextResponse.redirect(url);
+//    }
+//    return NextResponse.next();
+// });
+
 export const config = {
    matcher: "/checkout/:path*",
 };

@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
 
    // Custom Pages
    pages: {
-      signIn: "auth/login",
+      signIn: "/auth/login",
       newUser: "/auth/register",
    },
 
@@ -47,8 +47,8 @@ export const authOptions: NextAuthOptions = {
    },
 
    // Callbacks
-   // Como quiero que se firme el jwt, que data es la que voy a grabar en los token
    callbacks: {
+      // Como quiero que se firme el jwt, que data es la que voy a grabar en los token
       async jwt({ token, account, user }: any) {
          // console.log("------------------ JWT -----------------");
          // console.log({ token, account, user });

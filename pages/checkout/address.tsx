@@ -208,34 +208,34 @@ const AddressPage = () => {
 // Siempre que el cliente solicite esta página se realiza una petición
 // El problema empezaria cuando tendriamos muchas páginas y muchos usuarios realizando la misma peticion, deberias escribir este mismo codigo en cada una de ellas. Ademas de hacer trabajar demas al servidor cuando lo podriamos evitar.
 // * Solucion: A partir de Next 12 podemos crear un middleware para verificar la autenticacion y servir la pagina de forma ESTATICA
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-   // Se ejecuta antes de renderizar la pagina
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+//    // Se ejecuta antes de renderizar la pagina
 
-   // Recordar que las cookies viajan por request-Time, por las peticiones
-   const { token = "" } = req.cookies;
+//    // Recordar que las cookies viajan por request-Time, por las peticiones
+//    const { token = "" } = req.cookies;
 
-   let isValidToken = false;
+//    let isValidToken = false;
 
-   try {
-      // tenomos token válido
-      await jwt.isValidToken(token);
-      isValidToken = true;
-   } catch (error) {
-      isValidToken = false;
-   }
+//    try {
+//       // tenomos token válido
+//       await jwt.isValidToken(token);
+//       isValidToken = true;
+//    } catch (error) {
+//       isValidToken = false;
+//    }
 
-   if (!isValidToken) {
-      return {
-         redirect: {
-            permanent: false,
-            destination: "/auth/login?p=/checkout/address",
-         },
-      };
-   }
+//    if (!isValidToken) {
+//       return {
+//          redirect: {
+//             permanent: false,
+//             destination: "/auth/login?p=/checkout/address",
+//          },
+//       };
+//    }
 
-   return {
-      props: {},
-   };
-};
+//    return {
+//       props: {},
+//    };
+// };
 
 export default AddressPage;
