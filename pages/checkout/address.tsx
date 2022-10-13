@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { GetServerSideProps } from "next";
+import { useContext, useEffect, useState } from "react";
+// import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
 import {
@@ -44,16 +44,26 @@ const getAddressFromCookies = (): FormData => {
 
 const AddressPage = () => {
    const router = useRouter();
+
    const { updateAddress, shippingAddress } = useContext(CartContext);
+
+   const [defaultCountry, setDefaultCountry] = useState("");
 
    const {
       register,
       handleSubmit,
       watch,
       formState: { errors },
+      reset,
    } = useForm<FormData>({
       defaultValues: getAddressFromCookies(),
    });
+
+   useEffect(() => {
+      const allAddressInfo = getAddressFromCookies();
+      reset(allAddressInfo);
+      setDefaultCountry(allAddressInfo.country);
+   }, [reset]);
 
    const onUserDirection = (data: FormData) => {
       updateAddress(data);
@@ -160,9 +170,9 @@ const AddressPage = () => {
                <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                      <TextField
-                        key={Cookies.get("country") || countries[0].code}
+                        key={defaultCountry}
                         select
-                        defaultValue={shippingAddress?.country}
+                        defaultValue={defaultCountry}
                         variant="filled"
                         label="País"
                         {...register("country", {

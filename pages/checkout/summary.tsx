@@ -1,4 +1,5 @@
-import { useContext, useMemo } from "react";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import NextLink from "next/link";
 import {
    Box,
@@ -10,6 +11,7 @@ import {
    Link,
    Typography,
 } from "@mui/material";
+import Cookies from "js-cookie";
 import { CartContext } from "../../context";
 import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
@@ -17,6 +19,16 @@ import { countries } from "../../utils";
 
 const SummaryPage = () => {
    const { shippingAddress, numberOfItems } = useContext(CartContext);
+
+   const router = useRouter();
+
+   // Al hacer uso del useEffect es el cliente el que trabaja. (el servidor tambien lo podria hacer pero en este caso lo evitamos para no hacer uso de el todas las veces)
+   useEffect(() => {
+      // Si no tenemos las cookies redireccionamos a la persona porque primero debe cargar el formulario con todos sus datos
+      if (!Cookies.get("firstName")) {
+         router.push("/checkout/address");
+      }
+   }, [router]);
 
    if (!shippingAddress) {
       return <></>;
