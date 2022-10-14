@@ -18,7 +18,8 @@ import { ShopLayout } from "../../components/layouts";
 import { countries } from "../../utils";
 
 const SummaryPage = () => {
-   const { shippingAddress, numberOfItems } = useContext(CartContext);
+   const { shippingAddress, numberOfItems, createOrder } =
+      useContext(CartContext);
 
    const router = useRouter();
 
@@ -36,6 +37,10 @@ const SummaryPage = () => {
 
    const { address, city, country, phone, firstName, lastName, zip, address2 } =
       shippingAddress;
+
+   const onCreateOrder = () => {
+      createOrder();
+   };
 
    return (
       <ShopLayout
@@ -116,6 +121,7 @@ const SummaryPage = () => {
                            color="secondary"
                            className="circular-btn"
                            fullWidth
+                           onClick={onCreateOrder}
                         >
                            Comfirmar Order
                         </Button>
