@@ -1,5 +1,5 @@
 import { IUser } from "./";
-
+// El user es flexible porque puede que mi endpoint regrese todo el usuario o ciertas partes del usuario o _id
 export interface IOrder {
    _id?: string;
    user?:
