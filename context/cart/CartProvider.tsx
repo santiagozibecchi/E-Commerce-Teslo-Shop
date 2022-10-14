@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useEffect, useReducer } from "react";
 import Cookie from "js-cookie";
-import { ICartProduct, ShippingAddress } from "../../interfaces";
+import { ICartProduct, IOrder, ShippingAddress } from "../../interfaces";
 import { CartContext, cartReducer } from "./";
 import { tesloApi } from "../../api";
 // InitialState
@@ -191,8 +191,27 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
    };
 
    const createOrder = async () => {
+      if (!state.shippingAddress) {
+         throw new Error("No hay direccion de entrega");
+      }
+
+      // Informacion que va a llegar al backend
+      const body: IOrder = {
+         orderItems: state.cart.map((p) => ({
+            ...p,
+            size: p.size!,
+            image: p.images!,
+         })),
+         shippingAddress: state.shippingAddress,
+         numberOfItems: state.numberOfItems,
+         subTotal: state.subTotal,
+         tax: state.tax,
+         total: state.total,
+         isPaid: false,
+      };
+
       try {
-         const { data } = await tesloApi.post("/orders");
+         const { data } = await tesloApi.post("/orders", body);
 
          console.log({ data });
       } catch (error) {
