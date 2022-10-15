@@ -1,4 +1,6 @@
+import { GetServerSideProps, NextPage } from "next";
 import NextLink from "next/link";
+
 import {
    Box,
    Card,
@@ -15,8 +17,17 @@ import {
    CreditCardOffOutlined,
    CreditScoreOutlined,
 } from "@mui/icons-material";
+import { getSession } from "next-auth/react";
+import { dbOrders } from "../../database";
+import { IOrder } from "../../interfaces";
 
-const OrderPage = () => {
+interface Props {
+   order: IOrder;
+}
+
+const OrderPage: NextPage<Props> = ({ order }) => {
+   console.log({ order });
+
    return (
       <ShopLayout
          title="Resumen de la orden #65454315"
@@ -112,6 +123,53 @@ const OrderPage = () => {
          </Grid>
       </ShopLayout>
    );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+   req,
+   query,
+}) => {
+   const { id = "" } = query;
+   console.log(id);
+
+   const session: any = await getSession({ req });
+
+   if (!session) {
+      return {
+         // Puede que la sesion expiro y entonces lo mandamos al login
+         redirect: {
+            destination: `/auth/login?p=/orders/${id}`,
+            permanent: false,
+         },
+      };
+   }
+
+   const order = await dbOrders.getOrderById(id.toString());
+
+   if (!order) {
+      return {
+         redirect: {
+            destination: `/orders/history`,
+            permanent: false,
+         },
+      };
+   }
+
+   // * Comprobar que el id de la orden sea del usuario logeado
+   // El order.user es solamente el id porque no lo estoy populando
+   // si esto sucede significa que un usuario "x" quiere ver la orden de otro usuario, esto no lo vamos a permitir.
+   if (order.user !== session.user._id) {
+      return {
+         redirect: {
+            destination: `/orders/history`,
+            permanent: false,
+         },
+      };
+   }
+
+   return {
+      props: { order },
+   };
 };
 
 export default OrderPage;
