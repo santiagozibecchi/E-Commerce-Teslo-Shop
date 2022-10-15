@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import {
@@ -6,6 +6,7 @@ import {
    Button,
    Card,
    CardContent,
+   Chip,
    Divider,
    Grid,
    Link,
@@ -23,6 +24,9 @@ const SummaryPage = () => {
 
    const router = useRouter();
 
+   const [isPosting, setIsPosting] = useState(false);
+   const [errorMessage, setErrorMessage] = useState("");
+
    // Al hacer uso del useEffect es el cliente el que trabaja. (el servidor tambien lo podria hacer pero en este caso lo evitamos para no hacer uso de el todas las veces)
    useEffect(() => {
       // Si no tenemos las cookies redireccionamos a la persona porque primero debe cargar el formulario con todos sus datos
@@ -38,8 +42,19 @@ const SummaryPage = () => {
    const { address, city, country, phone, firstName, lastName, zip, address2 } =
       shippingAddress;
 
-   const onCreateOrder = () => {
-      createOrder();
+   const onCreateOrder = async () => {
+      setIsPosting(true);
+      // * Depende del resultado será redirigido o no
+      const { hasError, message } = await createOrder();
+
+      if (hasError) {
+         setIsPosting(false);
+         setErrorMessage(message);
+         return;
+      }
+
+      // replace => para que la persona no pueda volver a regresar atras
+      router.replace(`/orders/${message}`);
    };
 
    return (
@@ -116,8 +131,9 @@ const SummaryPage = () => {
 
                      {/* Resumen de la order - OrdenSummary */}
                      <OrderSummary />
-                     <Box sx={{ mt: 3 }}>
+                     <Box sx={{ mt: 3 }} display="flex" flexDirection="column">
                         <Button
+                           disabled={isPosting}
                            color="secondary"
                            className="circular-btn"
                            fullWidth
@@ -125,6 +141,16 @@ const SummaryPage = () => {
                         >
                            Comfirmar Order
                         </Button>
+
+                        <Chip
+                           color="error"
+                           label={errorMessage}
+                           // Un string vacio es considerado como falso
+                           sx={{
+                              mt: 2,
+                              display: errorMessage ? "flex" : "none",
+                           }}
+                        />
                      </Box>
                   </CardContent>
                </Card>
