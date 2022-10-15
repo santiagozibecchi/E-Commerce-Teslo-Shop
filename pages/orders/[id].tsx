@@ -52,7 +52,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
             />
          )}
 
-         <Grid container mt={3}>
+         <Grid container mt={3} className="fadeIn">
             {/* Para mostrar los productos que tenemos en el carrito */}
             <Grid item xs={12} sm={7}>
                {/* Lista de los productos */}

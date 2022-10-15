@@ -16,6 +16,9 @@ interface Props {
 }
 
 export const OrderSummary: NextPage<Props> = ({ orderValues }) => {
+   // Otra forma de resolverlo
+   // const { numberOfItems, subTotal, total, tax } = orderValues ? orderValues : useContext(CartContext);
+
    const { numberOfItems, subTotal, total, tax } = useContext(CartContext);
 
    const detailsForSummary = orderValues
