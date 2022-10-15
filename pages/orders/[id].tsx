@@ -26,42 +26,45 @@ interface Props {
 }
 
 const OrderPage: NextPage<Props> = ({ order }) => {
-   console.log({ order });
+   const { shippingAddress } = order;
 
    return (
-      <ShopLayout
-         title="Resumen de la orden #65454315"
-         pageDescription="Order: ABC123"
-      >
+      <ShopLayout title="Resumen de la orden" pageDescription="Order: ABC123">
          <Typography variant="h1" component="h1">
-            Resumen de la orden
+            Resumen de la orden {order._id}
          </Typography>
 
-         {/* <Chip
-            sx={{ mt: 2 }}
-            label="Pago pendiente"
-            variant="outlined"
-            color="error"
-            icon={<CreditCardOffOutlined />}
-         /> */}
-         <Chip
-            sx={{ mt: 2 }}
-            label="Orden pagada correctamente"
-            variant="outlined"
-            color="success"
-            icon={<CreditScoreOutlined />}
-         />
+         {order.isPaid ? (
+            <Chip
+               sx={{ mt: 2 }}
+               label="Orden pagada correctamente"
+               variant="outlined"
+               color="success"
+               icon={<CreditScoreOutlined />}
+            />
+         ) : (
+            <Chip
+               sx={{ mt: 2 }}
+               label="Pago pendiente"
+               variant="outlined"
+               color="error"
+               icon={<CreditCardOffOutlined />}
+            />
+         )}
 
          <Grid container mt={3}>
             {/* Para mostrar los productos que tenemos en el carrito */}
             <Grid item xs={12} sm={7}>
-               {/* CartList */}
-               <CartList />
+               {/* Lista de los productos */}
+               <CartList products={order.orderItems} />
             </Grid>
             <Grid item xs={12} sm={5}>
                <Card className="summary-card">
                   <CardContent>
-                     <Typography variant="h2">Resumen (3 productos)</Typography>
+                     <Typography variant="h2">
+                        Resumen ( {order.numberOfItems}
+                        {order.numberOfItems > 1 ? " productos" : " producto"} )
+                     </Typography>
                      <Divider sx={{ my: 1 }} />
 
                      <Box
@@ -72,50 +75,50 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                         <Typography fontWeight="bold">
                            Direccion de entrega
                         </Typography>
-                        <NextLink href="/checkout/address" passHref>
-                           <Link
-                              underline="always"
-                              sx={{ fontSize: { xs: "14px", sm: "16px" } }}
-                           >
-                              Editar
-                           </Link>
-                        </NextLink>
                      </Box>
 
-                     <Typography>Santiago Zibecchi</Typography>
-                     <Typography>Colon 5225</Typography>
-                     <Typography>Goya, 3450</Typography>
-                     <Typography>Argentina</Typography>
-                     <Typography>+54 370 145648</Typography>
+                     <Typography>
+                        {shippingAddress.firstName} {shippingAddress.lastName}
+                     </Typography>
+                     <Typography>
+                        {shippingAddress.address}{" "}
+                        {shippingAddress.address2
+                           ? `, ${shippingAddress.address2}`
+                           : ""}
+                     </Typography>
+                     <Typography>
+                        {shippingAddress.city}, {shippingAddress.zip}
+                     </Typography>
+                     <Typography>{shippingAddress.country}</Typography>
+                     <Typography>{shippingAddress.phone}</Typography>
 
                      <Divider sx={{ my: 1 }} />
 
-                     <Box display="flex" justifyContent="flex-end">
-                        <NextLink href="/cart" passHref>
-                           <Link
-                              underline="always"
-                              sx={{ fontSize: { xs: "14px", sm: "16px" } }}
-                           >
-                              Modificar Compra
-                           </Link>
-                        </NextLink>
-                     </Box>
-
                      {/* Resumen de la order - OrdenSummary */}
-                     <OrderSummary />
+                     <OrderSummary
+                        orderValues={{
+                           numberOfItems: order.numberOfItems,
+                           subTotal: order.subTotal,
+                           total: order.total,
+                           tax: order.tax,
+                        }}
+                     />
+
                      <Box sx={{ mt: 3 }} display="flex" flexDirection="column">
                         {/* TODO */}
-                        <h1>Pagar</h1>
-
-                        <Chip
-                           label="Orden pagada correctamente"
-                           variant="outlined"
-                           color="secondary"
-                           icon={<CreditScoreOutlined />}
-                           sx={{
-                              alignSelf: "center",
-                           }}
-                        />
+                        {order.isPaid ? (
+                           <Chip
+                              label="Orden pagada correctamente"
+                              variant="outlined"
+                              color="secondary"
+                              icon={<CreditScoreOutlined />}
+                              sx={{
+                                 alignSelf: "center",
+                              }}
+                           />
+                        ) : (
+                           <h1>Pagar</h1>
+                        )}
                      </Box>
                   </CardContent>
                </Card>
@@ -132,6 +135,7 @@ export const getServerSideProps: GetServerSideProps = async ({
    const { id = "" } = query;
    console.log(id);
 
+   // * Identifico el usuario logeado
    const session: any = await getSession({ req });
 
    if (!session) {
@@ -144,6 +148,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       };
    }
 
+   // Obtengo la orden en base al id del producto
    const order = await dbOrders.getOrderById(id.toString());
 
    if (!order) {

@@ -1,11 +1,26 @@
+import { NextPage } from "next";
 import { Chip, Divider, Grid, Typography } from "@mui/material";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import { useContext } from "react";
 import { CartContext } from "../../context";
 import { currency } from "../../utils";
+import { IOrder } from "../../interfaces";
 
-export const OrderSummary = () => {
+interface Props {
+   orderValues?: {
+      numberOfItems: number;
+      subTotal: number;
+      total: number;
+      tax: number;
+   };
+}
+
+export const OrderSummary: NextPage<Props> = ({ orderValues }) => {
    const { numberOfItems, subTotal, total, tax } = useContext(CartContext);
+
+   const detailsForSummary = orderValues
+      ? orderValues
+      : { numberOfItems, subTotal, total, tax };
 
    return (
       <Grid container>
@@ -13,13 +28,15 @@ export const OrderSummary = () => {
             <Typography>N° de productos</Typography>
          </Grid>
          <Grid item xs={6} display="flex" justifyContent="flex-end">
-            <Typography>{numberOfItems}</Typography>
+            <Typography>{detailsForSummary.numberOfItems}</Typography>
          </Grid>
          <Grid item xs={6}>
             <Typography>Subtotal</Typography>
          </Grid>
          <Grid item xs={6} display="flex" justifyContent="flex-end">
-            <Typography>{currency.format(subTotal)}</Typography>
+            <Typography>
+               {currency.format(detailsForSummary.subTotal)}
+            </Typography>
          </Grid>
          <Grid item xs={6}>
             <Typography>
@@ -27,7 +44,7 @@ export const OrderSummary = () => {
             </Typography>
          </Grid>
          <Grid item xs={6} display="flex" justifyContent="flex-end">
-            <Typography>{currency.format(tax)}</Typography>
+            <Typography>{currency.format(detailsForSummary.tax)}</Typography>
          </Grid>
          <Grid item xs={12} mt={2}>
             <Divider sx={{ my: 1 }} variant="middle">
@@ -52,7 +69,7 @@ export const OrderSummary = () => {
          </Grid> */}
          <Grid item xs={12} display="flex" justifyContent="center">
             <Typography variant="subtitle1">
-               {currency.format(total)}
+               {currency.format(detailsForSummary.total)}
             </Typography>
          </Grid>
       </Grid>
