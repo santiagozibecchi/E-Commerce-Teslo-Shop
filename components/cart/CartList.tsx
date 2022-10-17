@@ -46,6 +46,9 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
    };
 
    // * Para reutilizar el componente
+   // Uno es para mostrar la lista de productos en el carrito, en esta podemos editar los productos modificando su cantidad
+   // y el otro para mostrar en la orden, donde ya no podremos editar la informacion de la compra
+   // http://localhost:3000/orders/634d502605b6310cc2e5fceb
    const productsToShow = products ? products : productsInCart;
 
    return (
@@ -63,7 +66,7 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
                      <Link>
                         <CardActionArea>
                            <CardMedia
-                              image={`/products/${product.image as string}`}
+                              image={`/products/${product.images}`}
                               component="img"
                               sx={{ borderRadius: "5px" }}
                            />

@@ -3,7 +3,7 @@ import { ISize } from "./";
 export interface ICartProduct {
    _id: string;
    // mostraremos una sola imagen del producto
-   image: string;
+   images: string;
    price: number;
    // Solo es necesario un precio (no va a cambiar el precio por talla)
    size?: ISize;

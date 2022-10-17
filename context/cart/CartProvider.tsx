@@ -204,7 +204,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
          orderItems: state.cart.map((p) => ({
             ...p,
             size: p.size!,
-            image: p.images!,
+            images: p.images!,
          })),
          shippingAddress: state.shippingAddress,
          numberOfItems: state.numberOfItems,
