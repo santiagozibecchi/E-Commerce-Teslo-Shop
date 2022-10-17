@@ -51,6 +51,8 @@ docker-compose up -d
 
 -  React Hook Form
 
+-  Flujo para los sistemas de gestión de pagos
+
 ## SSP
 
 Como estamos del lado del servidor tambien podemos acceder a las cookies. Podriamos utilizarlas para regresar algo de interes.
