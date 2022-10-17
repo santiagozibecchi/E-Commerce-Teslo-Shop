@@ -123,7 +123,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                     purchase_units: [
                                        {
                                           amount: {
-                                             value: "200.19",
+                                             value: `${order.total}`,
                                           },
                                        },
                                     ],
@@ -136,9 +136,10 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                        console.log({ details });
                                        const name =
                                           details.payer.name!.given_name;
-                                       alert(
-                                          `Transaction completed by ${name}`
-                                       );
+
+                                       // alert(
+                                       //    `Transaction completed by ${name}`
+                                       // );
                                     });
                               }}
                            />
@@ -173,6 +174,7 @@ export const getServerSideProps: GetServerSideProps = async ({
    }
 
    // Obtengo la orden en base al id del producto
+   // Con las validaciones necesarias dentro de esta funcion
    const order = await dbOrders.getOrderById(id.toString());
 
    if (!order) {
