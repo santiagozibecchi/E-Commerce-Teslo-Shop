@@ -1,5 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
+import { IPaypal } from "../../../interfaces";
+import { db } from "../../../database";
+import { Order } from "../../../models";
 
 type Data = {
    message: string | null;
@@ -58,6 +61,10 @@ const getPaypalBearerToken = async (): Promise<string | null> => {
 };
 
 const payOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+   // TODO: validar la sesion del usuario
+   // TODO: validar mongoID
+
+   // * Token de validacion desde nuestro backend
    const paypalBearerToken = await getPaypalBearerToken();
 
    if (!paypalBearerToken) {
@@ -66,7 +73,51 @@ const payOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       });
    }
 
+   const { transactionId = "", orderId = "" } = req.body;
+
+   // Si todo sale bien tenemos que hacer la peticion al href, mandando el token generado
+   // Usualmente los token van en los headers
+
+   const { data } = await axios.get<IPaypal.PaypalOrderStatusResponse>(
+      `${process.env.PAYPAL_ORDERS_URL}/${transactionId}`,
+      {
+         headers: {
+            Authorization: `Bearer ${paypalBearerToken}`,
+         },
+      }
+   );
+
+   if (data.status !== "COMPLETED") {
+      return res.status(401).json({
+         message: "Orden no reconocida",
+      });
+   }
+
+   await db.connect();
+
+   const dbOrder = await Order.findById(orderId);
+
+   if (!dbOrder) {
+      await db.disconnect();
+      return res.status(400).json({
+         message: "La Orden no existe en la base de datos",
+      });
+   }
+
+   if (dbOrder.total !== Number(data.purchase_units[0].amount.value)) {
+      await db.disconnect();
+      return res.status(400).json({
+         message: "Los montos de Paypal y nuestra orden no son iguales",
+      });
+   }
+
+   dbOrder.transactionId = transactionId;
+   dbOrder.isPaid = true;
+   await dbOrder.save();
+
+   await db.disconnect();
+
    return res.status(200).json({
-      message: paypalBearerToken,
+      message: "Orden Pagada correctamente",
    });
 };
