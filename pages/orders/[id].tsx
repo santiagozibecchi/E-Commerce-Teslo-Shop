@@ -20,13 +20,48 @@ import {
 import { getSession } from "next-auth/react";
 import { dbOrders } from "../../database";
 import { IOrder } from "../../interfaces";
+import { tesloApi } from "../../api";
+import { useRouter } from "next/router";
+
+type OrderResponseBody = {
+   id: string;
+   status:
+      | "COMPLETED"
+      | "SAVED"
+      | "APPROVED"
+      | "VOIDED"
+      | "COMPLETED"
+      | "PAYER_ACTION_REQUIRED";
+};
 
 interface Props {
    order: IOrder;
 }
 
 const OrderPage: NextPage<Props> = ({ order }) => {
+   const router = useRouter();
+
    const { shippingAddress } = order;
+
+   const onOrderCompleted = async (details: OrderResponseBody) => {
+      if (details.status !== "COMPLETED") {
+         return alert("No hay pago en Paypal");
+      }
+
+      try {
+         const { data } = await tesloApi.post(`/orders/pay`, {
+            transactionId: details.id,
+            orderId: order._id,
+         });
+
+         // * Al recargar la pagina vuelve a hacer la peticion al backend, y nuestro backend va a asegurarse de que todo este bien y regresará la orden pagada
+
+         router.reload();
+      } catch (error) {
+         console.log(error);
+         alert("Error");
+      }
+   };
 
    return (
       <ShopLayout title="Resumen de la orden" pageDescription="Order: ABC123">
@@ -133,10 +168,10 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                  return actions
                                     .order!.capture()
                                     .then((details) => {
-                                       console.log({ details });
-                                       const name =
-                                          details.payer.name!.given_name;
-
+                                       onOrderCompleted(details);
+                                       // console.log({ details });
+                                       // const name =
+                                       //    details.payer.name!.given_name;
                                        // alert(
                                        //    `Transaction completed by ${name}`
                                        // );

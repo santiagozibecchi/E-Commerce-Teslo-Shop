@@ -73,6 +73,7 @@ const payOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       });
    }
 
+   // * Esta data (req.body) llega desde el cliente
    const { transactionId = "", orderId = "" } = req.body;
 
    // Si todo sale bien tenemos que hacer la peticion al href, mandando el token generado
