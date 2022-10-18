@@ -26,6 +26,7 @@ import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import MaleOutlined from "@mui/icons-material/MaleOutlined";
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import VpnKeyOutlined from "@mui/icons-material/VpnKeyOutlined";
+import { DashboardOutlined } from "@mui/icons-material";
 
 export const SideMenu = () => {
    const { toggleSideMenu, isMenuOpen } = useContext(UiContext);
@@ -157,12 +158,20 @@ export const SideMenu = () => {
                      <Divider />
                      <ListSubheader>Admin Panel</ListSubheader>
 
+                     <ListItem button onClick={() => navigateTo(`/admin/`)}>
+                        <ListItemIcon>
+                           <DashboardOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary={"DashBoard"} />
+                     </ListItem>
+
                      <ListItem button>
                         <ListItemIcon>
                            <CategoryOutlined />
                         </ListItemIcon>
                         <ListItemText primary={"Productos"} />
                      </ListItem>
+
                      <ListItem button>
                         <ListItemIcon>
                            <ConfirmationNumberOutlined />
