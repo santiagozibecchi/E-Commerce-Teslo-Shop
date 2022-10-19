@@ -219,7 +219,7 @@ export const getServerSideProps: GetServerSideProps = async ({
    query,
 }) => {
    const { id = "" } = query;
-   console.log(id);
+   // console.log(id);
 
    // * Identifico el usuario logeado
    const session: any = await getSession({ req });
