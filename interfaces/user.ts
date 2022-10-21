@@ -9,4 +9,4 @@ export interface IUser {
    updatedAt?: string;
 }
 
-// password: no lo voy a tener en el front-end, el password solo me va a servir para identificarlo cuando estoy en fase de transferencia o cuando estoy en el backend 
+// password: no lo voy a tener en el front-end, el password solo me va a servir para identificarlo cuando estoy en fase de transferencia o cuando estoy en el backend

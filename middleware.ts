@@ -39,7 +39,7 @@ export async function middleware(req: NextRequest) {
    return NextResponse.next();
 }
 
-// A ninguna de estas páginas podra entrar si no tiene token
+// A ninguna de estas páginas podrá entrar si no tiene token
 export const config = {
    matcher: ["/checkout/:path*", "/admin/:path*", "/api/admin/:path*"],
 };
