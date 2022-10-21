@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { PeopleOutline } from "@mui/icons-material";
-import { AdminLayout } from "../../components/layouts";
+import useSWR from "swr";
+
 import {
    DataGrid,
    GridColDef,
@@ -8,20 +10,43 @@ import {
    GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { Grid, MenuItem, Select } from "@mui/material";
-import useSWR from "swr";
+
+import { AdminLayout } from "../../components/layouts";
 import { IUser } from "../../interfaces";
 import { tesloApi } from "../../api";
 
 const UsersPage = () => {
    const { data, error } = useSWR<IUser[]>("/api/admin/users");
+   // Estos usuarios tienen que tener el valor de la data, cuando la data cambie
+   const [users, setUsers] = useState<IUser[]>([]);
 
-   if (!data) return;
+   useEffect(() => {
+      // Nos aseguramos que la data exista
+      if (data) {
+         setUsers(data);
+      }
+   }, [data]);
+
    if (!data && !error) return <></>;
 
    const onRoleUpdated = async (userId: string, newRole: string) => {
+      // * Si sucede un error durante la petición:
+      const previosUsers = users.map((user) => ({ ...user }));
+
+      // * De esta manera ya tengo el usuario actualizado del lado del front-end muy rápido
+      const updatedUsers = users.map((user) => ({
+         ...user,
+         role: userId === user._id ? newRole : user.role,
+      }));
+
+      // Se actualiza y se renderiza nuevamente el componente al cambiar el estado de manera casi instantanea. Por eso se setea antes de realizar la peticion (Por fuera y antes del "try")
+      setUsers(updatedUsers);
+
+      // ! La peticion puede fallar => hay que revertir el cambio del estado
       try {
          await tesloApi.put("/admin/users", { userId, newRole });
       } catch (error) {
+         setUsers(previosUsers);
          console.log(error);
          alert("No se pudo actualizar el rol del usuario");
       }
@@ -55,7 +80,7 @@ const UsersPage = () => {
       },
    ];
 
-   const rows = data!.map((user) => ({
+   const rows = users.map((user) => ({
       id: user._id,
       email: user.email,
       name: user.name,
