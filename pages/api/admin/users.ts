@@ -18,7 +18,7 @@ export default function handler(
       case "GET":
          return getUsers(req, res);
 
-      case "POST":
+      case "PUT":
          return updateUser(req, res);
 
       default:
@@ -39,7 +39,9 @@ const getUsers = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
 // * Endpoint para cambiar el rol del usuario
 const updateUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-   const { userId = "", role = "" } = req.body;
+   const { userId = "", newRole = "" } = req.body;
+
+   console.log(req.body);
 
    if (!isValidObjectId(userId)) {
       return res.status(400).json({ message: "No existe usuario por ese ID" });
@@ -47,7 +49,7 @@ const updateUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
    const validRoles = ["admin", "super-user", "SEO", "client"];
 
-   if (!validRoles.includes(role)) {
+   if (!validRoles.includes(newRole)) {
       return res
          .status(400)
          .json({ message: "Role no permitido: " + validRoles.join(", ") });
@@ -56,13 +58,14 @@ const updateUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
    await db.connect();
 
    const user = await User.findById(userId);
+   console.log(user);
 
    if (!user) {
       await db.disconnect();
       return res.status(404).json({ message: "Usuario no encontrado" });
    }
 
-   user.role = role;
+   user.role = newRole;
    await user.save();
 
    await db.disconnect();

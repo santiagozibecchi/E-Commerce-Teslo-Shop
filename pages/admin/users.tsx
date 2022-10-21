@@ -5,23 +5,54 @@ import {
    GridColDef,
    GridRowsProp,
    GridCellParams,
+   GridValueGetterParams,
 } from "@mui/x-data-grid";
-import { Grid } from "@mui/material";
+import { Grid, MenuItem, Select } from "@mui/material";
 import useSWR from "swr";
 import { IUser } from "../../interfaces";
+import { tesloApi } from "../../api";
 
 const UsersPage = () => {
    const { data, error } = useSWR<IUser[]>("/api/admin/users");
 
    if (!data) return;
-   if (!data && !error) <></>;
+   if (!data && !error) return <></>;
 
-   console.log(data!);
+   const onRoleUpdated = async (userId: string, newRole: string) => {
+      try {
+         await tesloApi.put("/admin/users", { userId, newRole });
+      } catch (error) {
+         console.log(error);
+         alert("No se pudo actualizar el rol del usuario");
+      }
+   };
 
    const columns: GridColDef[] = [
       { field: "email", headerName: "Correo", width: 250 },
       { field: "name", headerName: "Nombre completo", width: 300 },
-      { field: "role", headerName: "Rol", width: 300 },
+      {
+         field: "role",
+         headerName: "Rol",
+         width: 300,
+         renderCell: ({ row }: GridCellParams) => {
+            return (
+               <Select
+                  value={row.role}
+                  label="Rol"
+                  // El target siempre contiene el valor de input en la propiedad value
+                  onChange={({ target }) => onRoleUpdated(row.id, target.value)}
+                  sx={{
+                     width: "300px",
+                  }}
+               >
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="super-user">Super User</MenuItem>
+                  <MenuItem value="SEO">SEO</MenuItem>
+                  <MenuItem value="client">Client</MenuItem>
+               </Select>
+            );
+         },
+      },
    ];
 
    const rows = data!.map((user) => ({
