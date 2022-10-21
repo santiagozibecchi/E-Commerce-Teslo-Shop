@@ -4,7 +4,7 @@ export interface IOrder {
    _id?: string;
    user?:
       | IUser
-      | string /* si hago el populate obtengo los datos del usuario */;
+      | string /* si hago el populate obtengo los datos del usuario de tipo string */;
    orderItems: IOrderItem[];
    shippingAddress: ShippingAddress;
    paymentResult?: string;
