@@ -21,6 +21,7 @@ const columns: GridColDef[] = [
             <Chip variant="outlined" label="Pendiente" color="error" />
          );
       },
+      width: 150,
    },
    { field: "noProducts", headerName: "N° Productos", align: "center" },
    {
