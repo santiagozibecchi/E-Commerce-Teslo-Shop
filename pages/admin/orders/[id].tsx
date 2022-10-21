@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import { CartList, OrderSummary } from "../../../components/cart";
 import { AdminLayout } from "../../../components/layouts";
-import {
-   AirplaneTicketOutlined,
-   CreditCardOffOutlined,
-   CreditScoreOutlined,
-} from "@mui/icons-material";
+
+import AirplaneTicketOutlined from "@mui/icons-material/AirplaneTicketOutlined";
+import CreditCardOffOutlined from "@mui/icons-material/CreditCardOffOutlined";
+import CreditScoreOutlined from "@mui/icons-material/CreditScoreOutlined";
+
 import { dbOrders } from "../../../database";
 import { IOrder } from "../../../interfaces";
 

@@ -17,13 +17,10 @@ import {
    Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-// import ManOutlinedIcon from "@mui/icons-material/ManOutlined";
-// import Woman2OutlinedIcon from "@mui/icons-material/Woman2Outlined";
-// import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
-// import { AuthContext } from "../../context";
+
 import styles from "./Login&Register.module.css";
 import { validations } from "../../utils";
-// import { tesloApi } from "../../api";
+
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({

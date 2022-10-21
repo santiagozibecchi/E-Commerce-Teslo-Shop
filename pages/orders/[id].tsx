@@ -15,10 +15,10 @@ import {
 import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import {
-   CreditCardOffOutlined,
-   CreditScoreOutlined,
-} from "@mui/icons-material";
+
+import CreditCardOffOutlined from "@mui/icons-material/CreditCardOffOutlined";
+import CreditScoreOutlined from "@mui/icons-material/CreditScoreOutlined";
+
 import { getSession } from "next-auth/react";
 import { dbOrders } from "../../database";
 import { IOrder } from "../../interfaces";
