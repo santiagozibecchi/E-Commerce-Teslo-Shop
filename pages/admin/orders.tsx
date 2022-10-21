@@ -29,7 +29,11 @@ const columns: GridColDef[] = [
       headerName: "Ver Orden",
       renderCell: ({ row }: GridCellParams) => {
          return (
-            <a href={`/admin/orders/${row.id}`} target="_blank">
+            <a
+               href={`/admin/orders/${row.id}`}
+               target="_blank"
+               rel="noreferrer"
+            >
                Ver Orden
             </a>
          );
@@ -38,7 +42,7 @@ const columns: GridColDef[] = [
    { field: "createdAt", headerName: "Creada en", width: 300 },
 ];
 
-const ordersPage = () => {
+const OrdersPage = () => {
    const { data, error } = useSWR<IOrder[]>("/api/admin/orders");
 
    if (!data && !error) return <></>;
@@ -73,4 +77,4 @@ const ordersPage = () => {
    );
 };
 
-export default ordersPage;
+export default OrdersPage;
