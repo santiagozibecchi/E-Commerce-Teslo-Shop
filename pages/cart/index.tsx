@@ -9,10 +9,10 @@ import {
    Typography,
 } from "@mui/material";
 
+import { useRouter } from "next/router";
 import { CartContext } from "../../context";
 import { ShopLayout } from "../../components/layouts";
 import { CartList, OrderSummary } from "../../components/cart";
-import { useRouter } from "next/router";
 
 const CardPage = () => {
    const { isLoaded, cart } = useContext(CartContext);

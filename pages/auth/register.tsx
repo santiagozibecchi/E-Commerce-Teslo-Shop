@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { GetServerSideProps } from "next";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
@@ -17,11 +17,11 @@ import {
    styled,
    Chip,
 } from "@mui/material";
+
 import styles from "./Login&Register.module.css";
 import { validations } from "../../utils";
 // import { tesloApi } from "../../api";
-import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import { useContext } from "react";
+import { ErrorOutline } from "@mui/icons-material";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
    "& fieldset": {

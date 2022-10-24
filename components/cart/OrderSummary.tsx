@@ -1,10 +1,10 @@
 import { NextPage } from "next";
 import { Chip, Divider, Grid, Typography } from "@mui/material";
-import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import { PaymentsOutlined } from "@mui/icons-material";
 import { useContext } from "react";
 import { CartContext } from "../../context";
 import { currency } from "../../utils";
-import { IOrder } from "../../interfaces";
+// import { IOrder } from "../../interfaces";
 
 interface Props {
    orderValues?: {
@@ -52,7 +52,7 @@ export const OrderSummary: NextPage<Props> = ({ orderValues }) => {
          <Grid item xs={12} mt={2}>
             <Divider sx={{ my: 1 }} variant="middle">
                <Chip
-                  icon={<PaymentsOutlinedIcon />}
+                  icon={<PaymentsOutlined />}
                   variant="outlined"
                   color="secondary"
                   label="TOTAL"

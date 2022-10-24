@@ -1,6 +1,6 @@
 import { Chip, Grid } from "@mui/material";
 import { AdminLayout } from "../../components/layouts/AdminLayout";
-import ConfirmationNumberOutlined from "@mui/icons-material/ConfirmationNumberOutlined";
+import { ConfirmationNumberOutlined } from "@mui/icons-material";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import useSWR from "swr";
 import { IOrder, IUser } from "../../interfaces";

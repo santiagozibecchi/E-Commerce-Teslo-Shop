@@ -3,15 +3,19 @@ import useSWR from "swr";
 import { AdminLayout } from "../../components/layouts";
 import { Grid, Typography } from "@mui/material";
 import SummaryTile from "../../components/admin/SummaryTile";
-import CategoryOutlined from "@mui/icons-material/CategoryOutlined";
-import AccessTimeOutlined from "@mui/icons-material/AccessTimeOutlined";
-import AttachMoneyOutlined from "@mui/icons-material/AttachMoneyOutlined";
-import CancelPresentationOutlined from "@mui/icons-material/CancelPresentationOutlined";
-import CreditCardOffOutlined from "@mui/icons-material/CreditCardOffOutlined";
-import CreditCardOutlined from "@mui/icons-material/CreditCardOutlined";
-import DashboardOutlined from "@mui/icons-material/DashboardOutlined";
-import GroupOutlined from "@mui/icons-material/GroupOutlined";
-import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
+
+import {
+   CategoryOutlined,
+   AccessTimeOutlined,
+   AttachMoneyOutlined,
+   CancelPresentationOutlined,
+   CreditCardOffOutlined,
+   CreditCardOutlined,
+   DashboardOutlined,
+   GroupOutlined,
+   ProductionQuantityLimitsOutlined,
+} from "@mui/icons-material";
+
 import { DashboardSummaryResponse } from "../../interfaces";
 
 /*

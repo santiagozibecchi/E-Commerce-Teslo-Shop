@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
+
 import {
    Box,
    Button,
@@ -12,6 +13,7 @@ import {
    Link,
    Typography,
 } from "@mui/material";
+
 import Cookies from "js-cookie";
 import { CartContext } from "../../context";
 import { CartList, OrderSummary } from "../../components/cart";

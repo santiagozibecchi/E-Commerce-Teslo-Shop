@@ -9,15 +9,17 @@ import {
    CircularProgress,
    Divider,
    Grid,
-   Link,
    Typography,
 } from "@mui/material";
+
 import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 
-import CreditCardOffOutlined from "@mui/icons-material/CreditCardOffOutlined";
-import CreditScoreOutlined from "@mui/icons-material/CreditScoreOutlined";
+import {
+   CreditCardOffOutlined,
+   CreditScoreOutlined,
+} from "@mui/icons-material";
 
 import { getSession } from "next-auth/react";
 import { dbOrders } from "../../database";
