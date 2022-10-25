@@ -14,9 +14,10 @@ import {
    Link,
    TextField,
    Typography,
-   styled,
+   // styled,
    Chip,
 } from "@mui/material";
+import { styled } from "@mui/system";
 
 import styles from "./Login&Register.module.css";
 import { validations } from "../../utils";
