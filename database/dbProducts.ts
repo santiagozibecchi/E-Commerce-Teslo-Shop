@@ -24,6 +24,8 @@ export const getProductBySlug = async (
       return null;
    }
 
+   // TODO: procesamiento de las imagenes cuando subamos al servidor
+
    // Forza al objeto a ser serializado como un string
    // tecnica del parseo se utiliza mas que nada cuando tengo el objectId de mongo. fechas
    return JSON.parse(JSON.stringify(product));
