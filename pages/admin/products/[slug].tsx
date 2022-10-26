@@ -74,13 +74,26 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 
    useEffect(() => {
       const subscription = watch((value, { name, type }) => {
+         /*
+            En "regex" almacenamos los valores que queremos permitir. El símbolo ^ indica lo contrario. La expresión viene a decir "todos los caracteres que NO estén entre a-z, A-Z, 0-9, y el guión bajo _ ".
+
+            - La "g" significa global, o sea, en todo el texto.
+
+            - La "i" significa "case insensitive", o sea, ignorar mayúsculas y minúsculas. Este no haría falta, pero lo pongo siempre para evitar errores.
+
+            Al aplicarla en el replaceAll, decimos que elimine todos los caracteres que cumplan la condición de "regex".
+
+            Y así obtendremos el "slug" más limpio y más seo friendly.
+        */
+
+         const regex = /[^a-zA-Z0-9_]/gi;
          if (name === "title") {
             // Sugerencia para el slug
             const newSlug =
                value.title
                   ?.trim()
                   .replaceAll(" ", "_")
-                  .replaceAll("'", "")
+                  .replaceAll(regex, "")
                   .toLowerCase() || "";
 
             setValue("slug", newSlug);
