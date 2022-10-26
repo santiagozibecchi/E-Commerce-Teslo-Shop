@@ -35,7 +35,7 @@ export const AdminLayout: FC<PropsWithChildren<Props>> = ({
                   {icon} {title}
                </Typography>
 
-               <Typography variant="h2" sx={{ mb: 1 }}>
+               <Typography variant="h2" sx={{ mb: 1, mt: 2 }}>
                   {subTitle}
                </Typography>
             </Box>
