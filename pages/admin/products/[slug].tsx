@@ -70,6 +70,23 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       defaultValues: product,
    });
 
+   const onChangeSize = (size: string) => {
+      // Valores seleccionados
+      const currentSize = getValues("sizes");
+
+      // Si hace click en un size ya seleccionado significa que lo quiere eliminar
+      if (currentSize.includes(size)) {
+         return setValue(
+            "sizes",
+            currentSize.filter((s) => s !== size),
+            { shouldValidate: true }
+         );
+      }
+
+      // Para agregar
+      setValue("sizes", [...currentSize, size], { shouldValidate: true });
+   };
+
    const onDeleteTag = (tag: string) => {};
 
    const onSubmit = (formData: FormData) => {
@@ -214,8 +231,13 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                      {validSizes.map((size) => (
                         <FormControlLabel
                            key={size}
-                           control={<Checkbox />}
+                           control={
+                              <Checkbox
+                                 checked={getValues("sizes").includes(size)}
+                              />
+                           }
                            label={size}
+                           onChange={() => onChangeSize(size)}
                         />
                      ))}
                   </FormGroup>
