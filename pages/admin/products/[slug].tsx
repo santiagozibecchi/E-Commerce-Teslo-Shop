@@ -6,6 +6,7 @@ import { IProduct } from "../../../interfaces";
 import {
    DriveFileRenameOutline,
    SaveOutlined,
+   SettingsOverscanOutlined,
    UploadOutlined,
 } from "@mui/icons-material";
 
@@ -63,6 +64,8 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       register,
       handleSubmit,
       formState: { errors },
+      getValues,
+      setValue,
    } = useForm<FormData>({
       defaultValues: product,
    });
@@ -160,8 +163,12 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                      <FormLabel>Tipo</FormLabel>
                      <RadioGroup
                         row
-                        // value={ status }
-                        // onChange={ onStatusChanged }
+                        value={getValues("type")}
+                        onChange={({ target }) =>
+                           setValue("type", target.value, {
+                              shouldValidate: true,
+                           })
+                        }
                      >
                         {validTypes.map((option) => (
                            <FormControlLabel
@@ -181,8 +188,12 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                      <FormLabel>Género</FormLabel>
                      <RadioGroup
                         row
-                        // value={ status }
-                        // onChange={ onStatusChanged }
+                        value={getValues("gender")}
+                        onChange={({ target }) =>
+                           setValue("gender", target.value, {
+                              shouldValidate: true,
+                           })
+                        }
                      >
                         {validGender.map((option) => (
                            <FormControlLabel
@@ -331,3 +342,27 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 };
 
 export default ProductAdminPage;
+
+/*
+    Radio buttons:
+    <Controller
+  name="type"
+  control={control}
+  defaultValue={undefined}
+  render={({ field }) => (
+    <FormControl>
+      <FormLabel>Tipo</FormLabel>
+      <RadioGroup row {...field}>
+        {validTypes.map((option) => (
+          <FormControlLabel
+            key={option}
+            value={option}
+            control={<Radio color="secondary" />}
+            label={capitalize(option)}
+          />
+        ))}
+      </RadioGroup>
+    </FormControl>
+  )}
+/>
+*/
