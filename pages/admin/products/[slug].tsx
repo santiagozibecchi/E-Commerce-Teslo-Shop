@@ -34,6 +34,7 @@ import {
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 const validTypes = ["shirts", "pants", "hoodies", "hats"];
 const validGender = ["men", "women", "kid", "unisex"];
@@ -66,9 +67,28 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       formState: { errors },
       getValues,
       setValue,
+      watch,
    } = useForm<FormData>({
       defaultValues: product,
    });
+
+   useEffect(() => {
+      const subscription = watch((value, { name, type }) => {
+         if (name === "title") {
+            // Sugerencia para el slug
+            const newSlug =
+               value.title
+                  ?.trim()
+                  .replaceAll(" ", "_")
+                  .replaceAll("'", "")
+                  .toLowerCase() || "";
+
+            setValue("slug", newSlug);
+         }
+      });
+
+      return () => subscription.unsubscribe();
+   }, [watch, setValue]);
 
    const onChangeSize = (size: string) => {
       // Valores seleccionados
