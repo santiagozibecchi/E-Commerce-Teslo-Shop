@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { GetServerSideProps } from "next";
 import { AdminLayout } from "../../../components/layouts";
 import { IProduct } from "../../../interfaces";
@@ -61,6 +61,8 @@ interface Props {
 }
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
+   const [newTagValue, setNewTagValue] = useState("");
+
    const {
       register,
       handleSubmit,
@@ -120,7 +122,25 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       setValue("sizes", [...currentSize, size], { shouldValidate: true });
    };
 
-   const onDeleteTag = (tag: string) => {};
+   const onNewTag = () => {
+      const newTag = newTagValue.trim().toLowerCase();
+      setNewTagValue("");
+      const currentTags = getValues("tags");
+
+      if (currentTags.includes(newTag)) {
+         return;
+      }
+
+      setValue("tags", [...currentTags, newTag], { shouldValidate: true });
+   };
+
+   const onDeleteTag = (tag: string) => {
+      const currentTags = getValues("tags");
+
+      const updateTags = currentTags.filter((t) => t !== tag);
+
+      return setValue("tags", updateTags, { shouldValidate: true });
+   };
 
    const onSubmit = (formData: FormData) => {
       console.log(formData);
@@ -300,6 +320,11 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                      fullWidth
                      sx={{ mb: 1 }}
                      helperText="Presiona [spacebar] para agregar"
+                     onChange={({ target }) => setNewTagValue(target.value)}
+                     value={newTagValue}
+                     onKeyUp={({ code }) =>
+                        code === "Space" ? onNewTag() : undefined
+                     }
                   />
 
                   <Box
@@ -312,7 +337,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                      }}
                      component="ul"
                   >
-                     {product.tags.map((tag) => {
+                     {getValues("tags").map((tag) => {
                         return (
                            <Chip
                               key={tag}
