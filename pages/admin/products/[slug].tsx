@@ -70,8 +70,6 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
    const [newTagValue, setNewTagValue] = useState("");
    const [isSaving, setIsSaving] = useState(false);
 
-   console.log(isSaving);
-
    const {
       register,
       handleSubmit,
@@ -143,15 +141,24 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       setValue("tags", [...currentTags, newTag], { shouldValidate: true });
    };
 
-   const onFileSelected = ({ target }: ChangeEvent<HTMLInputElement>) => {
+   const onFileSelected = async ({ target }: ChangeEvent<HTMLInputElement>) => {
       // Dentro del evento target vienen los archivos
-
-      if (!target.files || target.files.length === 0) return;
+      if (!target.files || target.files.length === 0) {
+         return;
+      }
 
       try {
+         // console.log(file);
          for (const file of target.files) {
-            const formDataImg = new FormData();
-            console.log(file);
+            const formDataFile = new FormData();
+
+            formDataFile.append("file", file);
+
+            const { data } = await tesloApi.post<{ message: string }>(
+               "/admin/upload",
+               formDataFile
+            );
+            console.log({ data });
          }
       } catch (error) {
          console.log(error);
@@ -174,7 +181,6 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 
       // Evitar el doble posteo
       setIsSaving(true);
-      console.log(isSaving);
 
       // Siempre que se realiza una peticion puede fallar
       try {
