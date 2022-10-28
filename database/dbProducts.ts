@@ -25,6 +25,11 @@ export const getProductBySlug = async (
    }
 
    // TODO: procesamiento de las imagenes cuando subamos al servidor
+   product.images = product.images.map((image) => {
+      return image.includes("http")
+         ? image
+         : `${process.env.HOST_NAME}products/${image}`;
+   });
 
    // Forza al objeto a ser serializado como un string
    // tecnica del parseo se utiliza mas que nada cuando tengo el objectId de mongo. fechas
@@ -69,7 +74,16 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
       .lean();
    await db.disconnect();
 
-   return products;
+   const updatedProducts = products.map((product) => {
+      product.images = product.images.map((image) => {
+         return image.includes("http")
+            ? image
+            : `${process.env.HOST_NAME}products/${image}`;
+      });
+      return product;
+   });
+
+   return updatedProducts;
 };
 
 // Funcion para obtener todos los productos
@@ -80,7 +94,16 @@ export const getAllProducts = async (): Promise<IProduct[]> => {
 
    await db.disconnect();
 
-   return JSON.parse(JSON.stringify(products));
+   const updatedProducts = products.map((product) => {
+      product.images = product.images.map((image) => {
+         return image.includes("http")
+            ? image
+            : `${process.env.HOST_NAME}products/${image}`;
+      });
+      return product;
+   });
+
+   return JSON.parse(JSON.stringify(updatedProducts));
 };
 
 // * Tanto las fechas de mongodb como el _id: newObjectId("aa23raefsas54a5s"), no estan serializadas
