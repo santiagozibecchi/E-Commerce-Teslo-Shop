@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { ChangeEvent, FC, useRef, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { AdminLayout } from "../../../components/layouts";
@@ -62,6 +62,10 @@ interface Props {
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
    const router = useRouter();
+
+   // Referencia al input
+   // No va a redibujar la pantalla o el componente si sufre algun cambio
+   const fileInputRef = useRef<HTMLInputElement>(null);
 
    const [newTagValue, setNewTagValue] = useState("");
    const [isSaving, setIsSaving] = useState(false);
@@ -137,6 +141,21 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       }
 
       setValue("tags", [...currentTags, newTag], { shouldValidate: true });
+   };
+
+   const onFileSelected = ({ target }: ChangeEvent<HTMLInputElement>) => {
+      // Dentro del evento target vienen los archivos
+
+      if (!target.files || target.files.length === 0) return;
+
+      try {
+         for (const file of target.files) {
+            const formDataImg = new FormData();
+            console.log(file);
+         }
+      } catch (error) {
+         console.log(error);
+      }
    };
 
    const onDeleteTag = (tag: string) => {
@@ -394,9 +413,22 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                         fullWidth
                         startIcon={<UploadOutlined />}
                         sx={{ mb: 3 }}
+                        onClick={() => fileInputRef.current?.click()}
                      >
                         Cargar imagen
                      </Button>
+                     {/* Oculpamos el input a la vista del cliente pero mantenemos la referencia de esta con el boton que queremos en el onClick */}
+                     <input
+                        ref={fileInputRef}
+                        type="file"
+                        multiple
+                        accept="image/png, image/gif, image/jpeg"
+                        style={{
+                           display: "none",
+                        }}
+                        // Cuando el fileInput cambie hay que empazar con la carga de las imagenes
+                        onChange={onFileSelected}
+                     />
 
                      <Chip
                         label="Es necesario al 2 imagenes"
