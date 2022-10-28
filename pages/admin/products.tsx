@@ -1,9 +1,9 @@
 import useSWR from "swr";
 import NextLink from "next/link";
 
-import { CardMedia, Grid, Link } from "@mui/material";
+import { CardMedia, Grid, Link, Box, Button } from "@mui/material";
 import { AdminLayout } from "../../components/layouts/AdminLayout";
-import { CategoryOutlined } from "@mui/icons-material";
+import { AddOutlined, CategoryOutlined } from "@mui/icons-material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { IProduct } from "../../interfaces";
 import { format } from "../../utils/currency";
@@ -69,6 +69,17 @@ const ProductsPage = () => {
          subTitle={"Mantenimiento de productos"}
          icon={<CategoryOutlined />}
       >
+         <Box display="flex" justifyContent="end" sx={{ mb: 2 }}>
+            <Button
+               startIcon={<AddOutlined />}
+               color="secondary"
+               // /new para evaluar en la pagina del [slug] y crear un nuevo producto
+               href="/admin/products/new"
+            >
+               Crear Producto
+            </Button>
+         </Box>
+
          <Grid container mt={2} className="fadeIn">
             <Grid item xs={12} sx={{ height: 650, width: "100%" }}>
                <DataGrid
