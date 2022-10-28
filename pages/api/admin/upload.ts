@@ -12,6 +12,10 @@ type Data = {
 
 // Le dice a Next que no parsee el body, que lo deje como viene
 // Para evitar realizar muchos procesos ocupamos un paquete de tercero
+
+// ! npm next@12.2.2
+// ! https://github.com/vercel/next.js/issues/39262
+
 export const config = {
    api: {
       bodyParser: false,
