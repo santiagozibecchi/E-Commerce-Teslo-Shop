@@ -4,6 +4,9 @@ import { IProduct } from "../../../interfaces";
 import { Product } from "../../../models";
 import { isValidObjectId } from "mongoose";
 
+import { v2 as cloudinary } from "cloudinary";
+cloudinary.config(process.env.CLOUDINARY_URL || "");
+
 type Data =
    | {
         message: string;
@@ -112,6 +115,21 @@ const updateProduct = async (
       }
 
       // TODO: eliminar fotos en Cloudinary
+      // https://res.cloudinary.com/dkp5l1jti/image/upload/v1666983576/yfalen9zxjas4fwnysf7.jpg
+
+      // Para esto voy a necesitar saber cuales eran las imagenes que teniamos antes, que ahora ya no tenemos, para eliminarla/s
+      product.images.forEach(async (image) => {
+         if (!images.includes(image)) {
+            // Borrar de cloudinary
+
+            // Busca la posicion indice del ultimo slash y cortarlo a partir de allí + 1 para eliminar tmb el slash
+            // split: retorna un arreglo de string separado por "."
+            const [fileId, extension] = image
+               .substring(image.lastIndexOf("/") + 1)
+               .split(".");
+            await cloudinary.uploader.destroy(fileId);
+         }
+      });
 
       await product.update(req.body);
       await db.disconnect();

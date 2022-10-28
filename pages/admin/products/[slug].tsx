@@ -158,7 +158,11 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                "/admin/upload",
                formDataFile
             );
-            console.log({ data });
+
+            setValue("images", [...getValues("images"), data.message], {
+               shouldValidate: true,
+            });
+            console.log(data);
          }
       } catch (error) {
          console.log(error);
@@ -171,6 +175,13 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       const updateTags = currentTags.filter((t) => t !== tag);
 
       return setValue("tags", updateTags, { shouldValidate: true });
+   };
+
+   const onDeleteImage = (image: string) => {
+      const filterImages = getValues("images").filter((img) => img !== image);
+
+      // Solamente lo estoy eliminando visualmente del estado
+      setValue("images", filterImages, { shouldValidate: true });
    };
 
    // * Objetivo, poder cargar y actualizar en la misma pantalla
@@ -443,7 +454,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                      />
 
                      <Grid container spacing={2}>
-                        {product.images.map((img) => (
+                        {getValues("images").map((img) => (
                            <Grid item xs={4} sm={3} key={img}>
                               <Card>
                                  <CardMedia
@@ -453,7 +464,11 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                                     alt={img}
                                  />
                                  <CardActions>
-                                    <Button fullWidth color="error">
+                                    <Button
+                                       onClick={() => onDeleteImage(img)}
+                                       fullWidth
+                                       color="error"
+                                    >
                                        Borrar
                                     </Button>
                                  </CardActions>

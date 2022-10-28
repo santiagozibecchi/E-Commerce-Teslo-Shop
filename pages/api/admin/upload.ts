@@ -62,7 +62,7 @@ const parseFiles = async (req: NextApiRequest): Promise<string> => {
 const uploadFile = async (req: NextApiRequest, res: NextApiResponse) => {
    const imageUrl = await parseFiles(req);
 
-   return res.status(200).json(imageUrl);
+   return res.status(200).json({ message: imageUrl });
 };
 
 /*
