@@ -34,17 +34,23 @@ const getProductBySlug = async (
    await db.connect();
 
    try {
-      const productFoundBySlug = await Product.findOne({ slug }).lean();
+      const product = await Product.findOne({ slug }).lean();
       await db.disconnect();
 
-      if (!productFoundBySlug) {
+      if (!product) {
          await db.disconnect();
          res.status(404).json({
             message: "No se encontro el producto",
          });
       }
 
-      return res.status(200).json(productFoundBySlug);
+      product!.images! = product!.images.map((image) => {
+         return image.includes("http")
+            ? image
+            : `${process.env.HOST_NAME}products/${image}`;
+      });
+
+      return res.status(200).json(product);
    } catch (error) {
       console.log(error);
    }

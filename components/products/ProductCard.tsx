@@ -22,9 +22,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
 
    // Memorizamos el productImage porque puede cambiar otro estado y no quiero que se vuelva a recalcular cada vez que otro componente cambie su estado.
    const productImage = useMemo(() => {
-      return isHovered
-         ? `/products/${product.images[1]}`
-         : `/products/${product.images[0]}`;
+      return isHovered ? product.images[1] : product.images[0];
    }, [isHovered, product.images]);
 
    return (
